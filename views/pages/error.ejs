@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+
+<div style="text-align: center; padding: var(--space-20) var(--space-4);">
+  <div style="max-width: 600px; margin: 0 auto;">
+    <div style="font-size: var(--font-size-4xl); margin-bottom: var(--space-6);">⚠️</div>
+    <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+      Oops! Something went wrong
+    </h1>
+    <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-8);">
+      <%= (typeof message !== 'undefined' && message) ? message : 'An unexpected error occurred' %>
+    </p>
+
+    <% if (typeof status !== 'undefined') { %>
+      <div style="background: var(--color-error-light); border: 1px solid var(--color-error); color: var(--color-error); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+        Error Code: <%= status %>
+      </div>
+    <% } %>
+
+    <% if (typeof error !== 'undefined' && error && error.stack && process.env.NODE_ENV === 'development') { %>
+      <details style="margin-bottom: var(--space-8); text-align: left;">
+        <summary style="cursor: pointer; font-weight: var(--font-weight-medium); color: var(--color-gray-700); margin-bottom: var(--space-2);">
+          🔧 Technical Details (Development Only)
+        </summary>
+        <pre style="background: var(--color-gray-100); padding: var(--space-4); border-radius: var(--radius-md); overflow: auto; font-size: var(--font-size-sm); color: var(--color-gray-800); white-space: pre-wrap; word-break: break-word;"><%= error.stack %></pre>
+      </details>
+    <% } %>
+
+    <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+      <a href="/" class="btn btn--primary">
+        🏠 Go to Homepage
+      </a>
+      <button onclick="history.back()" class="btn btn--outline">
+        ⬅️ Go Back
+      </button>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

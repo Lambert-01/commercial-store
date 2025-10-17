@@ -1,16 +1,120 @@
 <%- include('../partials/header') %>
 
-<h2>Register</h2>
-<form action="/register" method="POST">
-  <input type="text" name="name" placeholder="Name" required>
-  <input type="email" name="email" placeholder="Email" required>
-  <input type="password" name="password" placeholder="Password" required>
-  <select name="role" required>
-    <option value="customer">Customer</option>
-    <option value="supplier">Supplier</option>
-  </select>
-  <button type="submit">Register</button>
-</form>
-<a href="/login">Already have an account? Login</a>
+<!-- Register Section -->
+<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--space-16) 0;">
+  <div class="container">
+    <div style="max-width: 500px; margin: 0 auto;">
+      <!-- Register Card -->
+      <div class="card" style="padding: var(--space-8); box-shadow: var(--shadow-xl);">
+        <div style="text-align: center; margin-bottom: var(--space-8);">
+          <div style="width: 80px; height: 80px; background: var(--color-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: var(--font-size-3xl);">
+            📝
+          </div>
+          <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-2);">
+            Join Ecommerce Rwanda
+          </h1>
+          <p style="color: var(--color-gray-600);">
+            Create your account and start your journey with us
+          </p>
+        </div>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div style="background: var(--color-error-light); border: 1px solid var(--color-error); color: var(--color-error); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+            ⚠️ <%= error %>
+          </div>
+        <% } %>
+
+        <form action="/register" method="POST" class="admin-form">
+          <div class="form-group">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text"
+                   id="name"
+                   name="name"
+                   placeholder="Enter your full name"
+                   class="form-input"
+                   required
+                   style="margin-bottom: var(--space-4);">
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email"
+                   id="email"
+                   name="email"
+                   placeholder="Enter your email address"
+                   class="form-input"
+                   required
+                   style="margin-bottom: var(--space-4);">
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   placeholder="Create a strong password"
+                   class="form-input"
+                   required
+                   minlength="6"
+                   style="margin-bottom: var(--space-4);">
+          </div>
+
+          <div class="form-group">
+            <label for="role" class="form-label">Account Type</label>
+            <select id="role"
+                    name="role"
+                    class="form-select"
+                    required
+                    style="margin-bottom: var(--space-6);">
+              <option value="customer">🛒 Customer - Shop and buy products</option>
+              <option value="supplier">🏪 Supplier - Sell your products</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn--primary" style="width: 100%; margin-bottom: var(--space-4);">
+            📝 Create Account
+          </button>
+
+          <div style="text-align: center;">
+            <a href="/login" style="color: var(--color-primary); text-decoration: none; font-weight: var(--font-weight-medium);">
+              Already have an account? Sign in here
+            </a>
+          </div>
+        </form>
+
+        <!-- Account Type Benefits -->
+        <div style="margin-top: var(--space-8); padding: var(--space-6); background: var(--color-gray-50); border-radius: var(--radius-md);">
+          <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-gray-800); margin-bottom: var(--space-4);">
+            🎯 Account Type Benefits
+          </h3>
+
+          <div style="margin-bottom: var(--space-4);">
+            <h4 style="font-size: var(--font-size-base); font-weight: var(--font-weight-medium); color: var(--color-primary); margin-bottom: var(--space-2);">
+              🛒 Customer Account
+            </h4>
+            <ul style="color: var(--color-gray-600); font-size: var(--font-size-sm); padding-left: var(--space-5);">
+              <li>Browse and purchase from local suppliers</li>
+              <li>Secure mobile money payments</li>
+              <li>Order tracking and history</li>
+              <li>Exclusive deals and promotions</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 style="font-size: var(--font-size-base); font-weight: var(--font-weight-medium); color: var(--color-secondary); margin-bottom: var(--space-2);">
+              🏪 Supplier Account
+            </h4>
+            <ul style="color: var(--color-gray-600); font-size: var(--font-size-sm); padding-left: var(--space-5);">
+              <li>List and sell your products</li>
+              <li>Admin approval for quality assurance</li>
+              <li>Sales dashboard and analytics</li>
+              <li>Direct customer communication</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <%- include('../partials/footer') %>

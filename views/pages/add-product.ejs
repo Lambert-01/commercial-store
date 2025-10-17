@@ -1,0 +1,101 @@
+<%- include('../partials/header') %>
+
+<!-- Add Product Section -->
+<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--space-16) 0;">
+  <div class="container">
+    <div style="max-width: 600px; margin: 0 auto;">
+      <!-- Add Product Card -->
+      <div class="card" style="padding: var(--space-8); box-shadow: var(--shadow-xl);">
+        <div style="text-align: center; margin-bottom: var(--space-8);">
+          <div style="width: 80px; height: 80px; background: var(--color-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: var(--font-size-3xl);">
+            ➕
+          </div>
+          <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-2);">
+            Add New Product
+          </h1>
+          <p style="color: var(--color-gray-600);">
+            List your product on Ecommerce Rwanda marketplace
+          </p>
+        </div>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div style="background: var(--color-error-light); border: 1px solid var(--color-error); color: var(--color-error); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+            ⚠️ <%= error %>
+          </div>
+        <% } %>
+
+        <form action="/supplier/add-product" method="POST" enctype="multipart/form-data" class="admin-form">
+          <div class="form-group">
+            <label for="name" class="form-label">Product Name *</label>
+            <input type="text"
+                   id="name"
+                   name="name"
+                   placeholder="Enter product name"
+                   class="form-input"
+                   required
+                   style="margin-bottom: var(--space-4);">
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">Description *</label>
+            <textarea id="description"
+                      name="description"
+                      placeholder="Describe your product in detail"
+                      class="form-input"
+                      rows="4"
+                      required
+                      style="margin-bottom: var(--space-4); resize: vertical;"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-6);">
+            <div class="form-group">
+              <label for="price" class="form-label">Price (RWF) *</label>
+              <input type="number"
+                     id="price"
+                     name="price"
+                     placeholder="0"
+                     class="form-input"
+                     min="1"
+                     step="0.01"
+                     required>
+            </div>
+
+            <div class="form-group">
+              <label for="stock" class="form-label">Stock Quantity *</label>
+              <input type="number"
+                     id="stock"
+                     name="stock"
+                     placeholder="0"
+                     class="form-input"
+                     min="0"
+                     required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="image" class="form-label">Product Image</label>
+            <input type="file"
+                   id="image"
+                   name="image"
+                   class="form-input"
+                   accept="image/*"
+                   style="margin-bottom: var(--space-6);">
+            <p style="font-size: var(--font-size-sm); color: var(--color-gray-600);">
+              📷 Upload a clear image of your product (JPG, PNG, max 5MB)
+            </p>
+          </div>
+
+          <div style="background: var(--color-info-light); border: 1px solid var(--color-info); color: var(--color-info); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+            <strong>ℹ️ Important:</strong> Your product will be reviewed by our admin team before being published to ensure quality standards.
+          </div>
+
+          <button type="submit" class="btn btn--primary" style="width: 100%;">
+            📦 Submit Product for Review
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

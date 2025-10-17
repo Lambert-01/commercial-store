@@ -1,18 +1,197 @@
 <%- include('../partials/header') %>
 
-<h2>Checkout</h2>
-<form action="/checkout" method="POST">
-  <h3>Shipping Information</h3>
-  <input type="text" name="address" placeholder="Address" required>
-  <input type="text" name="city" placeholder="City" required>
-  <input type="text" name="country" placeholder="Country" required>
+<!-- Checkout Section -->
+<section style="min-height: calc(100vh - 200px); padding: var(--space-16) 0;">
+  <div class="container">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <!-- Checkout Header -->
+      <div style="text-align: center; margin-bottom: var(--space-12);">
+        <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+          🛒 Checkout
+        </h1>
+        <p style="font-size: var(--font-size-lg); color: var(--color-gray-600);">
+          Complete your order with secure Mobile Money payment
+        </p>
+      </div>
 
-  <h3>Payment Information</h3>
-  <input type="text" name="cardNumber" placeholder="Card Number" required>
-  <input type="text" name="expiry" placeholder="Expiry Date" required>
-  <input type="text" name="cvv" placeholder="CVV" required>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8);">
+        <!-- Order Summary -->
+        <div class="card" style="padding: var(--space-8);">
+          <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-gray-900);">
+            📦 Order Summary
+          </h2>
 
-  <button type="submit">Place Order</button>
-</form>
+          <% if (cart && cart.items.length > 0) { %>
+            <div style="margin-bottom: var(--space-6);">
+              <% cart.items.forEach(item => { %>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-4); border-bottom: 1px solid var(--color-gray-200);">
+                  <div>
+                    <h4 style="font-size: var(--font-size-base); font-weight: var(--font-weight-medium); color: var(--color-gray-900); margin-bottom: var(--space-1);">
+                      <%= item.product.name %>
+                    </h4>
+                    <p style="font-size: var(--font-size-sm); color: var(--color-gray-600);">
+                      Quantity: <%= item.quantity %>
+                    </p>
+                  </div>
+                  <div style="text-align: right;">
+                    <p style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-primary);">
+                      <%= item.product.price * item.quantity %> RWF
+                    </p>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+
+            <div style="border-top: 2px solid var(--color-gray-200); padding-top: var(--space-4);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-gray-900);">
+                  Total:
+                </span>
+                <span style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-primary);">
+                  <%= cart.total %> RWF
+                </span>
+              </div>
+            </div>
+          <% } else { %>
+            <p style="text-align: center; color: var(--color-gray-600); padding: var(--space-8);">
+              Your cart is empty. <a href="/products" style="color: var(--color-primary);">Continue shopping</a>
+            </p>
+          <% } %>
+        </div>
+
+        <!-- Checkout Form -->
+        <div class="card" style="padding: var(--space-8);">
+          <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-gray-900);">
+            📋 Complete Your Order
+          </h2>
+
+          <% if (typeof error !== 'undefined' && error) { %>
+            <div style="background: var(--color-error-light); border: 1px solid var(--color-error); color: var(--color-error); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+              ⚠️ <%= error %>
+            </div>
+          <% } %>
+
+          <form action="/orders/process-checkout" method="POST" class="admin-form">
+            <!-- Shipping Information -->
+            <div style="margin-bottom: var(--space-8);">
+              <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+                🚚 Shipping Information
+              </h3>
+
+              <div class="form-group">
+                <label for="address" class="form-label">Street Address *</label>
+                <input type="text"
+                       id="address"
+                       name="shippingAddress[address]"
+                       placeholder="Enter your street address"
+                       class="form-input"
+                       required>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+                <div class="form-group">
+                  <label for="city" class="form-label">City *</label>
+                  <input type="text"
+                         id="city"
+                         name="shippingAddress[city]"
+                         placeholder="Enter city"
+                         class="form-input"
+                         required>
+                </div>
+
+                <div class="form-group">
+                  <label for="country" class="form-label">Country *</label>
+                  <select id="country" name="shippingAddress[country]" class="form-select" required>
+                    <option value="">Select Country</option>
+                    <option value="Rwanda" selected>Rwanda</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Burundi">Burundi</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div style="margin-bottom: var(--space-8);">
+              <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+                💳 Payment Information
+              </h3>
+
+              <div class="form-group">
+                <label class="form-label">Payment Method</label>
+                <div style="display: flex; gap: var(--space-3); margin-bottom: var(--space-4);">
+                  <label style="display: flex; align-items: center; gap: var(--space-2); cursor: pointer;">
+                    <input type="radio" name="paymentMethod" value="mobile-money" checked style="margin: 0;">
+                    <span style="font-size: var(--font-size-sm); color: var(--color-gray-700);">
+                      📱 Mobile Money (MTN/Airtel)
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="phoneNumber" class="form-label">Mobile Money Number *</label>
+                <input type="tel"
+                       id="phoneNumber"
+                       name="phoneNumber"
+                       placeholder="e.g., 0788123456 or +250788123456"
+                       class="form-input"
+                       pattern="^(\+250|0)[7-9][0-9]{8}$"
+                       title="Enter valid Rwandan phone number"
+                       required>
+                <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin-top: var(--space-1);">
+                  💡 We'll send a payment request to this number
+                </p>
+              </div>
+            </div>
+
+            <!-- Order Notes -->
+            <div class="form-group">
+              <label for="notes" class="form-label">Order Notes (Optional)</label>
+              <textarea id="notes"
+                        name="notes"
+                        placeholder="Any special delivery instructions..."
+                        class="form-input"
+                        rows="3"
+                        style="resize: vertical;"></textarea>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div style="margin-bottom: var(--space-6);">
+              <label style="display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer; font-size: var(--font-size-sm);">
+                <input type="checkbox" required style="margin-top: 2px;">
+                <span style="color: var(--color-gray-700);">
+                  I agree to the <a href="/terms" style="color: var(--color-primary); text-decoration: none;">Terms of Service</a>
+                  and <a href="/privacy" style="color: var(--color-primary); text-decoration: none;">Privacy Policy</a>
+                </span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn--primary" style="width: 100%; font-size: var(--font-size-lg);">
+              💳 Proceed to Payment
+            </button>
+          </form>
+
+          <!-- Security Badges -->
+          <div style="margin-top: var(--space-6); padding: var(--space-4); background: var(--color-success-light); border-radius: var(--radius-md);">
+            <div style="display: flex; align-items: center; gap: var(--space-3); justify-content: center;">
+              <span style="font-size: var(--font-size-lg);">🔒</span>
+              <div style="text-align: center;">
+                <p style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-success); margin: 0;">
+                  Secure Payment
+                </p>
+                <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin: 0;">
+                  SSL Encrypted • Mobile Money Protected
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <%- include('../partials/footer') %>

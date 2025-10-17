@@ -1,21 +1,187 @@
 <%- include('../partials/admin-header') %>
 
-<h2>Admin Dashboard</h2>
-<div class="admin-stats">
-  <p>Total Users: <%= totalUsers %></p>
-  <p>Total Products: <%= totalProducts %></p>
-  <p>Total Orders: <%= totalOrders %></p>
+<div class="admin-dashboard">
+  <!-- Dashboard Header -->
+  <div class="admin-dashboard__header">
+    <h1 class="admin-dashboard__title">📊 Admin Dashboard</h1>
+    <p class="admin-dashboard__subtitle">Manage your marketplace, users, and suppliers</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="admin-stats">
+    <div class="stat-card">
+      <div class="stat-card__header">
+        <h3 class="stat-card__title">Total Users</h3>
+        <div class="stat-card__icon" style="background-color: var(--color-primary);">
+          👥
+        </div>
+      </div>
+      <p class="stat-card__value"><%= totalUsers || 0 %></p>
+      <span class="stat-card__change stat-card__change--positive">+12% from last month</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card__header">
+        <h3 class="stat-card__title">Total Products</h3>
+        <div class="stat-card__icon" style="background-color: var(--color-secondary);">
+          📦
+        </div>
+      </div>
+      <p class="stat-card__value"><%= totalProducts || 0 %></p>
+      <span class="stat-card__change stat-card__change--positive">+8% from last month</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card__header">
+        <h3 class="stat-card__title">Total Orders</h3>
+        <div class="stat-card__icon" style="background-color: var(--color-accent);">
+          🛒
+        </div>
+      </div>
+      <p class="stat-card__value"><%= totalOrders || 0 %></p>
+      <span class="stat-card__change stat-card__change--positive">+25% from last month</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card__header">
+        <h3 class="stat-card__title">Revenue</h3>
+        <div class="stat-card__icon" style="background-color: var(--color-success);">
+          💰
+        </div>
+      </div>
+      <p class="stat-card__value">125,000 RWF</p>
+      <span class="stat-card__change stat-card__change--positive">+18% from last month</span>
+    </div>
+  </div>
+
+  <!-- Pending Products Section -->
+  <div style="margin-top: var(--space-12);">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-8);">
+      <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin: 0;">
+        ⏳ Pending Product Approvals
+      </h2>
+      <span class="status-badge status-badge--warning">
+        <%= pendingProducts ? pendingProducts.length : 0 %> Pending
+      </span>
+    </div>
+
+    <% if (pendingProducts && pendingProducts.length > 0) { %>
+      <div class="admin-table-container" style="background: var(--color-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-base); overflow: hidden;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Supplier</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Date Submitted</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pendingProducts.forEach(product => { %>
+              <tr>
+                <td>
+                  <div style="font-weight: var(--font-weight-medium); color: var(--color-gray-900);">
+                    <%= product.name %>
+                  </div>
+                </td>
+                <td>
+                  <div style="color: var(--color-gray-700);">
+                    <%= product.supplier.name %>
+                  </div>
+                </td>
+                <td>
+                  <span style="font-weight: var(--font-weight-semibold); color: var(--color-primary);">
+                    <%= product.price %> RWF
+                  </span>
+                </td>
+                <td>
+                  <span class="status-badge status-badge--pending">Pending</span>
+                </td>
+                <td>
+                  <span style="color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                    <%= new Date(product.createdAt).toLocaleDateString() %>
+                  </span>
+                </td>
+                <td>
+                  <div class="admin-actions">
+                    <button class="btn btn--admin-primary approve-product"
+                            data-product-id="<%= product._id %>"
+                            onclick="approveProduct('<%= product._id %>')">
+                      ✅ Approve
+                    </button>
+                    <button class="btn btn--admin-secondary reject-product"
+                            data-product-id="<%= product._id %>"
+                            onclick="rejectProduct('<%= product._id %>')">
+                      ❌ Reject
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div style="text-align: center; padding: var(--space-16); background: var(--color-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-base);">
+        <div style="font-size: var(--font-size-4xl); margin-bottom: var(--space-4);">✅</div>
+        <h3 style="font-size: var(--font-size-xl); color: var(--color-gray-900); margin-bottom: var(--space-2);">
+          All Caught Up!
+        </h3>
+        <p style="color: var(--color-gray-600);">
+          No pending product approvals at the moment. Great job keeping the marketplace clean!
+        </p>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Quick Actions -->
+  <div style="margin-top: var(--space-12);">
+    <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-8);">
+      ⚡ Quick Actions
+    </h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6);">
+      <a href="/admin/users" class="card" style="padding: var(--space-6); text-decoration: none; color: inherit; text-align: center;">
+        <div style="width: 60px; height: 60px; background: var(--color-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: var(--font-size-2xl);">
+          👥
+        </div>
+        <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-2);">
+          Manage Users
+        </h3>
+        <p style="color: var(--color-gray-600); font-size: var(--font-size-sm);">
+          View and manage all users in the system
+        </p>
+      </a>
+
+      <a href="/admin/products" class="card" style="padding: var(--space-6); text-decoration: none; color: inherit; text-align: center;">
+        <div style="width: 60px; height: 60px; background: var(--color-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: var(--font-size-2xl);">
+          📦
+        </div>
+        <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-2);">
+          All Products
+        </h3>
+        <p style="color: var(--color-gray-600); font-size: var(--font-size-sm);">
+          Manage all products in the marketplace
+        </p>
+      </a>
+
+      <a href="/admin/orders" class="card" style="padding: var(--space-6); text-decoration: none; color: inherit; text-align: center;">
+        <div style="width: 60px; height: 60px; background: var(--color-accent); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: var(--font-size-2xl);">
+          🛒
+        </div>
+        <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-2);">
+          Order Management
+        </h3>
+        <p style="color: var(--color-gray-600); font-size: var(--font-size-sm);">
+          Track and manage customer orders
+        </p>
+      </a>
+    </div>
+  </div>
 </div>
 
-<h3>Pending Products</h3>
-<ul>
-  <% pendingProducts.forEach(product => { %>
-    <li><%= product.name %> by <%= product.supplier.name %>
-      <button class="approve-product" data-product-id="<%= product._id %>">Approve</button>
-      <button class="reject-product" data-product-id="<%= product._id %>">Reject</button>
-    </li>
-  <% }); %>
-</ul>
-
 <script src="/js/admin.js"></script>
+
 <%- include('../partials/footer') %>

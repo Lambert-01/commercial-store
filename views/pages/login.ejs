@@ -1,11 +1,81 @@
 <%- include('../partials/header') %>
 
-<h2>Login</h2>
-<form action="/login" method="POST">
-  <input type="email" name="email" placeholder="Email" required>
-  <input type="password" name="password" placeholder="Password" required>
-  <button type="submit">Login</button>
-</form>
-<a href="/register">Don't have an account? Register</a>
+<!-- Login Section -->
+<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--space-16) 0;">
+  <div class="container">
+    <div style="max-width: 400px; margin: 0 auto;">
+      <!-- Login Card -->
+      <div class="card" style="padding: var(--space-8); box-shadow: var(--shadow-xl);">
+        <div style="text-align: center; margin-bottom: var(--space-8);">
+          <div style="width: 80px; height: 80px; background: var(--color-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: var(--font-size-3xl);">
+            🔑
+          </div>
+          <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-2);">
+            Welcome Back
+          </h1>
+          <p style="color: var(--color-gray-600);">
+            Sign in to your Ecommerce Rwanda account
+          </p>
+        </div>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div style="background: var(--color-error-light); border: 1px solid var(--color-error); color: var(--color-error); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+            ⚠️ <%= error %>
+          </div>
+        <% } %>
+
+        <form action="/login" method="POST" class="admin-form">
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email"
+                   id="email"
+                   name="email"
+                   placeholder="Enter your email address"
+                   class="form-input"
+                   required
+                   style="margin-bottom: var(--space-4);">
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   placeholder="Enter your password"
+                   class="form-input"
+                   required
+                   style="margin-bottom: var(--space-6);">
+          </div>
+
+          <button type="submit" class="btn btn--primary" style="width: 100%; margin-bottom: var(--space-4);">
+            🔑 Sign In
+          </button>
+
+          <div style="text-align: center;">
+            <a href="/register" style="color: var(--color-primary); text-decoration: none; font-weight: var(--font-weight-medium);">
+              Don't have an account? Create one here
+            </a>
+          </div>
+        </form>
+
+        <!-- Demo Credentials -->
+        <div style="margin-top: var(--space-8); padding: var(--space-4); background: var(--color-gray-50); border-radius: var(--radius-md);">
+          <h4 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-gray-700); margin-bottom: var(--space-2);">
+            🚀 Demo Credentials
+          </h4>
+          <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin-bottom: var(--space-2);">
+            <strong>Admin:</strong> admin@ecommerce.com / admin123
+          </p>
+          <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin-bottom: var(--space-2);">
+            <strong>Supplier:</strong> supplier@ecommerce.com / supplier123
+          </p>
+          <p style="font-size: var(--font-size-xs); color: var(--color-gray-600);">
+            <strong>Customer:</strong> test@example.com / password123
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <%- include('../partials/footer') %>

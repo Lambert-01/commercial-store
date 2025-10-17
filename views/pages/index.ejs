@@ -1,7 +1,101 @@
 <%- include('../partials/header') %>
 
-<h2>Welcome to Ecommerce Rwanda</h2>
-<p>Discover amazing products from local suppliers.</p>
-<a href="/products">Browse Products</a>
+<!-- Hero Section -->
+<section class="hero" style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%); color: var(--color-white); padding: var(--space-20) 0; text-align: center;">
+  <div class="container">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-white);">
+        🇷🇼 Welcome to Rwanda's Premier Marketplace
+      </h1>
+      <p style="font-size: var(--font-size-xl); margin-bottom: var(--space-8); opacity: 0.9; line-height: 1.6;">
+        Discover amazing products from local Rwandan suppliers. Shop with confidence using MTN Mobile Money and Airtel Money.
+        Support local businesses and grow Rwanda's digital economy.
+      </p>
+      <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+        <a href="/products" class="btn btn--primary" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8);">
+          🛍️ Browse Products
+        </a>
+        <a href="/supplier/register" class="btn btn--outline" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8); color: var(--color-white); border-color: var(--color-white);">
+          🏪 Become a Supplier
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section style="padding: var(--space-20) 0; background-color: var(--color-white);">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: var(--space-16);">
+      <h2 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+        Why Choose Ecommerce Rwanda?
+      </h2>
+      <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); max-width: 600px; margin: 0 auto;">
+        We're building Rwanda's most trusted marketplace, connecting customers with local suppliers across the country.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-8);">
+      <!-- Feature 1 -->
+      <div class="card" style="text-align: center; padding: var(--space-8);">
+        <div style="width: 80px; height: 80px; background: var(--color-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); font-size: var(--font-size-3xl);">
+          📱
+        </div>
+        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+          Mobile Money Integration
+        </h3>
+        <p style="color: var(--color-gray-600); line-height: 1.6;">
+          Pay securely with MTN Mobile Money and Airtel Money. No bank account required - just use your phone!
+        </p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="card" style="text-align: center; padding: var(--space-8);">
+        <div style="width: 80px; height: 80px; background: var(--color-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); font-size: var(--font-size-3xl);">
+          🏪
+        </div>
+        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+          Local Suppliers
+        </h3>
+        <p style="color: var(--color-gray-600); line-height: 1.6;">
+          Support Rwandan businesses and entrepreneurs. Every purchase helps grow our local economy.
+        </p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="card" style="text-align: center; padding: var(--space-8);">
+        <div style="width: 80px; height: 80px; background: var(--color-accent); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); font-size: var(--font-size-3xl);">
+          🚚
+        </div>
+        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+          Fast Delivery
+        </h3>
+        <p style="color: var(--color-gray-600); line-height: 1.6;">
+          Quick and reliable delivery across Kigali and major Rwandan cities. Track your orders in real-time.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section style="padding: var(--space-20) 0; background: linear-gradient(135deg, var(--color-gray-900) 0%, var(--color-gray-800) 100%); color: var(--color-white);">
+  <div class="container">
+    <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+      <h2 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6);">
+        Ready to Start Shopping?
+      </h2>
+      <p style="font-size: var(--font-size-lg); margin-bottom: var(--space-8); opacity: 0.9;">
+        Join thousands of satisfied customers already shopping on Rwanda's most trusted marketplace.
+      </p>
+      <a href="/register" class="btn btn--primary" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8); margin-right: var(--space-4);">
+        🚀 Get Started Now
+      </a>
+      <a href="/products" class="btn btn--outline" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8); color: var(--color-white); border-color: var(--color-white);">
+        Browse Products
+      </a>
+    </div>
+  </div>
+</section>
 
 <%- include('../partials/footer') %>

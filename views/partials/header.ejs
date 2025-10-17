@@ -3,24 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ecommerce Rwanda</title>
+  <meta name="description" content="Ecommerce Rwanda - Premier multi-vendor marketplace connecting customers with local suppliers across Rwanda">
+  <meta name="keywords" content="Rwanda, ecommerce, marketplace, shopping, local suppliers, Kigali, MTN Mobile Money, Airtel Money">
+  <meta name="author" content="Ecommerce Rwanda">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ecommerce Rwanda - Multi-Vendor Marketplace">
+  <meta property="og:description" content="Discover amazing products from local Rwandan suppliers. Shop with MTN Mobile Money and Airtel Money.">
+  <meta property="og:url" content="https://ecommercerwanda.com">
+  <meta property="og:site_name" content="Ecommerce Rwanda">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Ecommerce Rwanda - Multi-Vendor Marketplace">
+  <meta property="twitter:description" content="Discover amazing products from local Rwandan suppliers">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+  <title><%= (typeof title !== 'undefined' && title) ? title : 'Ecommerce Rwanda - Multi-Vendor Marketplace' %></title>
   <link rel="stylesheet" href="/css/style.css">
+
+  <!-- Preconnect to external domains for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>Ecommerce Rwanda</h1>
-    <nav>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/products">Products</a></li>
-        <li><a href="/cart">Cart</a></li>
-        <% if (user) { %>
-          <li><a href="/logout">Logout</a></li>
-        <% } else { %>
-          <li><a href="/login">Login</a></li>
-          <li><a href="/register">Register</a></li>
-        <% } %>
-      </ul>
-    </nav>
+  <header class="header">
+    <div class="container">
+      <div class="header__container">
+        <a href="/" class="header__logo">
+          <div class="header__logo-icon">🇷🇼</div>
+          <div>
+            <h1 class="header__title">Ecommerce Rwanda</h1>
+          </div>
+        </a>
+
+        <nav class="header__nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="/" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'home') ? 'nav__link--active' : '' %>">
+                🏠 Home
+              </a>
+            </li>
+            <li class="nav__item">
+              <a href="/products" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'products') ? 'nav__link--active' : '' %>">
+                🛍️ Products
+              </a>
+            </li>
+            <li class="nav__item">
+              <a href="/cart" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'cart') ? 'nav__link--active' : '' %>">
+                🛒 Cart
+                <% if (typeof cartItemCount !== 'undefined' && cartItemCount > 0) { %>
+                  <span class="badge"><%= cartItemCount %></span>
+                <% } %>
+              </a>
+            </li>
+            <% if (isAuthenticated) { %>
+              <% if (isSupplier) { %>
+                <li class="nav__item">
+                  <a href="/supplier/dashboard" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'supplier') ? 'nav__link--active' : '' %>">
+                    🏪 Dashboard
+                  </a>
+                </li>
+              <% } %>
+              <% if (isAdmin) { %>
+                <li class="nav__item">
+                  <a href="/admin" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'admin') ? 'nav__link--active' : '' %>">
+                    ⚙️ Admin
+                  </a>
+                </li>
+              <% } %>
+              <li class="nav__item">
+                <a href="/logout" class="nav__link">
+                  🚪 Logout
+                </a>
+              </li>
+            <% } else { %>
+              <li class="nav__item">
+                <a href="/login" class="nav__link nav__link--primary">
+                  🔑 Login
+                </a>
+              </li>
+              <li class="nav__item">
+                <a href="/register" class="btn btn--primary">
+                  📝 Register
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+
+        <!-- Mobile menu toggle -->
+        <button class="nav__toggle" aria-label="Toggle navigation menu">
+          ☰
+        </button>
+      </div>
+    </div>
   </header>
-  <main>
+
+  <main class="main">
+    <div class="container">

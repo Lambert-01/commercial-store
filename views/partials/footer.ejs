@@ -1,7 +1,91 @@
+    </div>
   </main>
-  <footer>
-    <p>&copy; 2023 Ecommerce Rwanda. All rights reserved.</p>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__container">
+        <!-- Company Info -->
+        <div class="footer__section">
+          <h3 class="footer__section-title">Ecommerce Rwanda</h3>
+          <p style="color: var(--color-gray-400); line-height: 1.6;">
+            Rwanda's premier multi-vendor marketplace connecting customers with local suppliers.
+            Shop with confidence using MTN Mobile Money and Airtel Money.
+          </p>
+          <div style="display: flex; gap: var(--space-4); margin-top: var(--space-4);">
+            <a href="#" aria-label="Facebook" style="color: var(--color-gray-400); font-size: var(--font-size-xl);">
+              📘
+            </a>
+            <a href="#" aria-label="Twitter" style="color: var(--color-gray-400); font-size: var(--font-size-xl);">
+              🐦
+            </a>
+            <a href="#" aria-label="Instagram" style="color: var(--color-gray-400); font-size: var(--font-size-xl);">
+              📷
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer__section">
+          <h3 class="footer__section-title">Quick Links</h3>
+          <ul class="footer__list">
+            <li class="footer__list-item">
+              <a href="/products" class="footer__link">All Products</a>
+            </li>
+            <li class="footer__list-item">
+              <a href="/supplier/register" class="footer__link">Become a Supplier</a>
+            </li>
+            <li class="footer__list-item">
+              <a href="/about" class="footer__link">About Us</a>
+            </li>
+            <li class="footer__list-item">
+              <a href="/contact" class="footer__link">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Customer Service -->
+        <div class="footer__section">
+          <h3 class="footer__section-title">Customer Service</h3>
+          <ul class="footer__list">
+            <li class="footer__list-item">
+              <a href="/help" class="footer__link">Help Center</a>
+            </li>
+            <li class="footer__list-item">
+              <a href="/shipping" class="footer__link">Shipping Info</a>
+            </li>
+            <li class="footer__list-item">
+              <a href="/returns" class="footer__link">Returns & Refunds</a>
+            </li>
+            <li class="footer__list-item">
+              <a href="/track" class="footer__link">Track Order</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="footer__section">
+          <h3 class="footer__section-title">Payment Methods</h3>
+          <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+            <div class="payment-method" style="padding: var(--space-2); background: var(--color-gray-800); border-radius: var(--radius-md); color: var(--color-white); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+              MTN MoMo
+            </div>
+            <div class="payment-method" style="padding: var(--space-2); background: var(--color-error); border-radius: var(--radius-md); color: var(--color-white); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+              Airtel Money
+            </div>
+          </div>
+          <p style="color: var(--color-gray-400); font-size: var(--font-size-sm); margin-top: var(--space-3);">
+            Secure payments powered by Rwanda's leading mobile money providers
+          </p>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>&copy; <%= new Date().getFullYear() %> Ecommerce Rwanda. All rights reserved. | 🇷🇼 Made with ❤️ for Rwanda</p>
+      </div>
+    </div>
   </footer>
+
+  <!-- Scripts -->
   <script src="/js/main.js"></script>
 </body>
 </html>

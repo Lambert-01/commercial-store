@@ -1,15 +1,107 @@
 <%- include('../partials/header') %>
 
-<h2>All Products</h2>
-<div class="products">
-  <% products.forEach(product => { %>
-    <div class="product">
-      <h3><%= product.name %></h3>
-      <p><%= product.description %></p>
-      <p>Price: $<%= product.price %></p>
-      <button class="add-to-cart" data-product-id="<%= product._id %>">Add to Cart</button>
+<!-- Page Header -->
+<div style="background: var(--color-gray-50); padding: var(--space-12) 0; margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-8)) var(--space-12);">
+  <div class="container">
+    <div style="text-align: center;">
+      <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+        🛍️ All Products
+      </h1>
+      <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); max-width: 600px; margin: 0 auto;">
+        Discover amazing products from verified Rwandan suppliers. Shop with confidence using mobile money payments.
+      </p>
     </div>
-  <% }); %>
+  </div>
 </div>
+
+<!-- Products Grid -->
+<section style="padding: var(--space-16) 0;">
+  <div class="container">
+    <% if (products && products.length > 0) { %>
+      <div class="products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-8);">
+        <% products.forEach(product => { %>
+          <article class="product-card card" style="position: relative; overflow: hidden;">
+            <!-- Product Image Placeholder -->
+            <div class="product-card__image" style="height: 200px; background: linear-gradient(135deg, var(--color-gray-200) 0%, var(--color-gray-300) 100%); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-4xl); margin-bottom: var(--space-6);">
+              📦
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-card__content" style="padding: var(--space-6);">
+              <h3 class="product-card__title" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-3); color: var(--color-gray-900);">
+                <%= product.name %>
+              </h3>
+
+              <p class="product-card__description" style="color: var(--color-gray-600); margin-bottom: var(--space-4); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                <%= product.description %>
+              </p>
+
+              <!-- Price -->
+              <div class="product-card__price" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+                <span style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-primary);">
+                  <%= product.price %> RWF
+                </span>
+                <span class="status-badge status-badge--active" style="font-size: var(--font-size-xs);">
+                  In Stock
+                </span>
+              </div>
+
+              <!-- Actions -->
+              <div class="product-card__actions" style="display: flex; gap: var(--space-3);">
+                <button class="btn btn--primary add-to-cart" data-product-id="<%= product._id %>" style="flex: 1;">
+                  🛒 Add to Cart
+                </button>
+                <a href="/products/<%= product._id %>" class="btn btn--outline" style="padding: var(--space-3) var(--space-4);">
+                  👁️ View
+                </a>
+              </div>
+            </div>
+
+            <!-- Supplier Badge -->
+            <div style="position: absolute; top: var(--space-4); right: var(--space-4);">
+              <span class="status-badge" style="background: rgba(0, 168, 107, 0.9); color: var(--color-white); font-size: var(--font-size-xs);">
+                Verified Supplier
+              </span>
+            </div>
+          </article>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <!-- Empty State -->
+      <div style="text-align: center; padding: var(--space-20) 0;">
+        <div style="font-size: var(--font-size-4xl); margin-bottom: var(--space-6);">📦</div>
+        <h2 style="font-size: var(--font-size-2xl); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+          No Products Available
+        </h2>
+        <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-8);">
+          Be the first to add products to our marketplace!
+        </p>
+        <a href="/supplier/register" class="btn btn--primary">
+          🏪 Become a Supplier
+        </a>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section style="padding: var(--space-16) 0; background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%); color: var(--color-white);">
+  <div class="container">
+    <div style="text-align: center; max-width: 500px; margin: 0 auto;">
+      <h2 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-4);">
+        📧 Stay Updated
+      </h2>
+      <p style="font-size: var(--font-size-lg); margin-bottom: var(--space-8); opacity: 0.9;">
+        Get notified about new products, special offers, and supplier updates.
+      </p>
+      <form style="display: flex; gap: var(--space-3);">
+        <input type="email" placeholder="Enter your email" style="flex: 1; padding: var(--space-3) var(--space-4); border: none; border-radius: var(--radius-md); font-size: var(--font-size-base);" required>
+        <button type="submit" class="btn btn--primary">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
 
 <%- include('../partials/footer') %>
