@@ -1,0 +1,37 @@
+/* Admin-specific Styles */
+.admin-dashboard {
+  background-color: #fff;
+  padding: 2rem;
+  margin: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.admin-header {
+  background-color: #007bff;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.admin-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-nav ul li {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.admin-nav ul li a {
+  color: #007bff;
+  text-decoration: none;
+  padding: 0.5rem;
+  display: block;
+  border-radius: 4px;
+}
+
+.admin-nav ul li a:hover {
+  background-color: #f8f9fa;
+}

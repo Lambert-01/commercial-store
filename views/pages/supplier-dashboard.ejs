@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+
+<h2>Supplier Dashboard</h2>
+<a href="/supplier/add-product">Add New Product</a>
+<h3>Your Products</h3>
+<ul>
+  <% products.forEach(product => { %>
+    <li><%= product.name %> - Status: <%= product.approved ? 'Approved' : 'Pending' %></li>
+  <% }); %>
+</ul>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,21 @@
+<%- include('../partials/admin-header') %>
+
+<h2>Admin Dashboard</h2>
+<div class="admin-stats">
+  <p>Total Users: <%= totalUsers %></p>
+  <p>Total Products: <%= totalProducts %></p>
+  <p>Total Orders: <%= totalOrders %></p>
+</div>
+
+<h3>Pending Products</h3>
+<ul>
+  <% pendingProducts.forEach(product => { %>
+    <li><%= product.name %> by <%= product.supplier.name %>
+      <button class="approve-product" data-product-id="<%= product._id %>">Approve</button>
+      <button class="reject-product" data-product-id="<%= product._id %>">Reject</button>
+    </li>
+  <% }); %>
+</ul>
+
+<script src="/js/admin.js"></script>
+<%- include('../partials/footer') %>
