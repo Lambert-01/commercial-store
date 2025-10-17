@@ -1,0 +1,157 @@
+<%- include('../partials/header') %>
+
+<!-- Supplier Orders Section -->
+<section style="padding: var(--space-16) 0;">
+  <div class="container">
+    <!-- Page Header -->
+    <div style="text-align: center; margin-bottom: var(--space-12);">
+      <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+        🏪 My Orders
+      </h1>
+      <p style="font-size: var(--font-size-lg); color: var(--color-gray-600);">
+        Manage orders for your products and update fulfillment status
+      </p>
+    </div>
+
+    <% if (orders && orders.length > 0) { %>
+      <div style="display: grid; gap: var(--space-6);">
+        <% orders.forEach(order => { %>
+          <div class="card" style="padding: var(--space-6);">
+            <!-- Order Header -->
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-6);">
+              <div>
+                <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--color-gray-900); margin-bottom: var(--space-2);">
+                  Order #<%= order._id.toString().slice(-8) %>
+                </h3>
+                <p style="color: var(--color-gray-600); font-size: var(--font-size-sm);">
+                  Customer: <%= order.customer.name %> |
+                  Placed: <%= new Date(order.createdAt).toLocaleDateString() %>
+                </p>
+              </div>
+
+              <div style="text-align: right;">
+                <span class="status-badge <%= order.status === 'delivered' ? 'status-badge--approved' : order.status === 'shipped' ? 'status-badge--active' : order.status === 'pending' ? 'status-badge--pending' : 'status-badge--rejected' %>">
+                  <%= order.status.charAt(0).toUpperCase() + order.status.slice(1) %>
+                </span>
+                <p style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-primary); margin-top: var(--space-2);">
+                  <%= order.total %> RWF
+                </p>
+              </div>
+            </div>
+
+            <!-- Order Items (Supplier's Products Only) -->
+            <div style="margin-bottom: var(--space-6);">
+              <h4 style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-3); color: var(--color-gray-900);">
+                📦 My Products in This Order
+              </h4>
+
+              <% const supplierItems = order.items.filter(item => item.product && item.product.supplier && item.product.supplier.toString() === 'supplier_id_placeholder'); %>
+              <% order.items.forEach(item => { %>
+                <% if (item.product) { %>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-gray-50); border-radius: var(--radius-md); margin-bottom: var(--space-2);">
+                    <div>
+                      <h5 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-gray-900); margin-bottom: var(--space-1);">
+                        <%= item.product.name %>
+                      </h5>
+                      <p style="font-size: var(--font-size-xs); color: var(--color-gray-600);">
+                        Quantity: <%= item.quantity %> × <%= item.price %> RWF
+                      </p>
+                    </div>
+                    <div style="text-align: right;">
+                      <p style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-primary);">
+                        <%= item.price * item.quantity %> RWF
+                      </p>
+                    </div>
+                  </div>
+                <% } %>
+              <% }); %>
+            </div>
+
+            <!-- Order Actions -->
+            <div style="display: flex; gap: var(--space-3); justify-content: space-between; align-items: center;">
+              <div style="display: flex; gap: var(--space-2);">
+                <% if (order.status === 'pending') { %>
+                  <button class="btn btn--admin-primary"
+                          onclick="updateOrderStatus('<%= order._id %>', 'processing')">
+                    🔄 Start Processing
+                  </button>
+                <% } else if (order.status === 'processing') { %>
+                  <button class="btn btn--admin-primary"
+                          onclick="updateOrderStatus('<%= order._id %>', 'shipped')">
+                    🚚 Mark as Shipped
+                  </button>
+                <% } else if (order.status === 'shipped') { %>
+                  <button class="btn btn--admin-primary"
+                          onclick="updateOrderStatus('<%= order._id %>', 'delivered')">
+                    ✅ Mark as Delivered
+                  </button>
+                <% } %>
+              </div>
+
+              <div style="display: flex; gap: var(--space-2);">
+                <button class="btn btn--outline"
+                        onclick="contactCustomer('<%= order.customer._id %>')">
+                  💬 Contact Customer
+                </button>
+                <a href="/orders/details/<%= order._id %>" class="btn btn--outline">
+                  👁️ View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <!-- Empty State -->
+      <div style="text-align: center; padding: var(--space-20) 0;">
+        <div style="font-size: var(--font-size-4xl); margin-bottom: var(--space-6);">🏪</div>
+        <h2 style="font-size: var(--font-size-2xl); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+          No Orders Yet
+        </h2>
+        <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-8);">
+          Orders for your products will appear here once customers start purchasing.
+        </p>
+        <div style="display: flex; gap: var(--space-4); justify-content: center;">
+          <a href="/supplier/add-product" class="btn btn--primary">
+            ➕ Add More Products
+          </a>
+          <a href="/products" class="btn btn--outline">
+            🛍️ Browse Marketplace
+          </a>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<script>
+async function updateOrderStatus(orderId, newStatus) {
+  try {
+    const response = await fetch('/orders/update-status', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ orderId, status: newStatus })
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      location.reload(); // Refresh page to show updated status
+    } else {
+      alert('Failed to update order status');
+    }
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    alert('Error updating order status');
+  }
+}
+
+function contactCustomer(customerId) {
+  // Placeholder for customer contact functionality
+  alert('Customer contact feature coming soon!');
+}
+</script>
+
+<%- include('../partials/footer') %>

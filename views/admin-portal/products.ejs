@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+
+  <style>
+    .admin-gradient {
+      background: linear-gradient(135deg, #00A86B 0%, #059669 100%);
+    }
+  </style>
+</head>
+<body class="bg-neutral-900 text-white min-h-screen">
+  <!-- Admin Header -->
+  <header class="admin-gradient shadow-lg">
+    <div class="container mx-auto px-4 py-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+            <span class="text-2xl">🇷🇼</span>
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold">Admin Portal</h1>
+            <p class="text-white text-opacity-80">Product Approval Management</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a href="/admin-portal" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all duration-200">
+            Dashboard
+          </a>
+          <a href="/logout" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all duration-200">
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Request ID for debugging -->
+    <% if (typeof requestId !== 'undefined') { %>
+      <div class="bg-primary bg-opacity-20 border border-primary border-opacity-30 rounded-lg p-3 mb-6">
+        <p class="text-primary text-sm font-mono">Request ID: <%= requestId %></p>
+      </div>
+    <% } %>
+
+    <!-- Page Header -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold mb-2 flex items-center gap-3">
+        <span class="text-4xl">📦</span>
+        Product Approval
+      </h2>
+      <p class="text-neutral-400 text-lg">
+        Review and approve products from suppliers
+      </p>
+    </div>
+
+    <!-- Pending Products Section -->
+    <% if (pendingProducts && pendingProducts.length > 0) { %>
+      <div class="bg-neutral-800 rounded-xl overflow-hidden mb-8">
+        <div class="bg-warning px-6 py-4 border-b border-neutral-600">
+          <h3 class="text-xl font-semibold flex items-center gap-2">
+            <span class="text-2xl">⏳</span>
+            Pending Approval (<%= pendingProducts.length %>)
+          </h3>
+        </div>
+
+        <div class="divide-y divide-neutral-700">
+          <% pendingProducts.forEach((product, index) => { %>
+            <div class="p-6" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+              <div class="flex items-start justify-between gap-6">
+                <div class="flex items-start gap-4 flex-1">
+                  <div class="w-16 h-16 bg-neutral-700 rounded-lg flex items-center justify-center text-2xl">
+                    📦
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="text-lg font-semibold text-white mb-1"><%= product.name %></h4>
+                    <p class="text-neutral-300 text-sm mb-3 line-clamp-2"><%= product.description %></p>
+
+                    <div class="flex items-center gap-4 text-sm text-neutral-400 mb-3">
+                      <span class="flex items-center gap-1">
+                        <span class="font-medium">Supplier:</span>
+                        <span class="text-white"><%= product.supplier?.name || 'Unknown' %></span>
+                      </span>
+                      <span class="flex items-center gap-1">
+                        <span class="font-medium">Price:</span>
+                        <span class="text-rwanda-yellow font-bold"><%= product.price %> RWF</span>
+                      </span>
+                      <span class="flex items-center gap-1">
+                        <span class="font-medium">Stock:</span>
+                        <span class="text-white"><%= product.stock %> units</span>
+                      </span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-1 bg-warning text-warning-900 rounded text-xs font-medium">
+                        Pending Approval
+                      </span>
+                      <span class="text-neutral-500 text-xs">
+                        Submitted <%= new Date(product.createdAt).toLocaleDateString() %>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex gap-2">
+                  <button onclick="approveProduct('<%= product._id %>')"
+                          class="bg-success hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                    ✅ Approve
+                  </button>
+                  <button onclick="rejectProduct('<%= product._id %>')"
+                          class="bg-error hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                    ❌ Reject
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Approved Products Section -->
+    <div class="bg-neutral-800 rounded-xl overflow-hidden">
+      <div class="bg-success px-6 py-4 border-b border-neutral-600">
+        <h3 class="text-xl font-semibold flex items-center gap-2">
+          <span class="text-2xl">✅</span>
+          Recently Approved Products (<%= approvedProducts?.length || 0 %>)
+        </h3>
+      </div>
+
+      <% if (approvedProducts && approvedProducts.length > 0) { %>
+        <div class="divide-y divide-neutral-700">
+          <% approvedProducts.forEach((product, index) => { %>
+            <div class="p-6 opacity-75" data-aos="fade-up" data-aos-delay="<%= index * 50 %>">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 bg-neutral-700 rounded-lg flex items-center justify-center text-xl">
+                    📦
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-white"><%= product.name %></h4>
+                    <p class="text-neutral-400 text-sm">by <%= product.supplier?.name || 'Unknown' %></p>
+                  </div>
+                </div>
+
+                <div class="text-right">
+                  <div class="text-lg font-bold text-rwanda-yellow mb-1"><%= product.price %> RWF</div>
+                  <div class="text-neutral-400 text-sm">Approved</div>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="text-center py-16">
+          <div class="text-6xl mb-4">📦</div>
+          <h3 class="text-xl font-semibold text-neutral-300 mb-2">No Approved Products Yet</h3>
+          <p class="text-neutral-400">Approved products will appear here.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Empty State for Pending Products -->
+    <% if (!pendingProducts || pendingProducts.length === 0) { %>
+      <div class="bg-neutral-800 rounded-xl p-12 text-center mb-8">
+        <div class="text-8xl mb-6">🎉</div>
+        <h3 class="text-2xl font-bold text-white mb-4">All Caught Up!</h3>
+        <p class="text-neutral-400 text-lg mb-6">
+          No products are pending approval at the moment.
+        </p>
+        <div class="bg-success bg-opacity-20 border border-success border-opacity-30 rounded-lg p-4 inline-block">
+          <p class="text-success font-medium">✅ All supplier products have been reviewed</p>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div class="bg-neutral-800 rounded-xl p-6 text-center">
+        <div class="text-3xl mb-2">⏳</div>
+        <div class="text-2xl font-bold text-warning mb-1"><%= pendingProducts?.length || 0 %></div>
+        <div class="text-neutral-400">Pending Approval</div>
+      </div>
+
+      <div class="bg-neutral-800 rounded-xl p-6 text-center">
+        <div class="text-3xl mb-2">✅</div>
+        <div class="text-2xl font-bold text-success mb-1"><%= approvedProducts?.length || 0 %></div>
+        <div class="text-neutral-400">Approved This Week</div>
+      </div>
+
+      <div class="bg-neutral-800 rounded-xl p-6 text-center">
+        <div class="text-3xl mb-2">🏪</div>
+        <div class="text-2xl font-bold text-primary mb-1">
+          <%= new Set([...(pendingProducts || []), ...(approvedProducts || [])].map(p => p.supplier?._id)).size %>
+        </div>
+        <div class="text-neutral-400">Active Suppliers</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rejection Modal -->
+  <div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-neutral-800 rounded-xl p-6 max-w-md mx-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-white">Reject Product</h3>
+        <button onclick="closeRejectModal()" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+      </div>
+      <form id="rejectForm">
+        <input type="hidden" id="rejectProductId" name="productId">
+        <div class="mb-4">
+          <label class="block text-neutral-300 text-sm mb-2">Reason for Rejection:</label>
+          <textarea id="rejectReason" name="reason" rows="3"
+                    class="w-full bg-neutral-700 text-white rounded-lg px-3 py-2 focus:bg-neutral-600 focus:outline-none"
+                    placeholder="Please provide a reason for rejection..."></textarea>
+        </div>
+        <div class="flex gap-3">
+          <button type="submit" class="bg-error hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+            Reject Product
+          </button>
+          <button type="button" onclick="closeRejectModal()" class="bg-neutral-600 hover:bg-neutral-500 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    let currentRejectProductId = null;
+
+    function approveProduct(productId) {
+      if (confirm('Are you sure you want to approve this product?')) {
+        fetch('/admin-portal/products/approve', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Product approved successfully!');
+            location.reload();
+          } else {
+            alert('Error: ' + (data.error || 'Failed to approve product'));
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to approve product. Please try again.');
+        });
+      }
+    }
+
+    function rejectProduct(productId) {
+      currentRejectProductId = productId;
+      document.getElementById('rejectProductId').value = productId;
+      document.getElementById('rejectReason').value = '';
+
+      const modal = document.getElementById('rejectModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeRejectModal() {
+      const modal = document.getElementById('rejectModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      currentRejectProductId = null;
+    }
+
+    // Handle rejection form submission
+    document.getElementById('rejectForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const reason = document.getElementById('rejectReason').value.trim();
+      if (!reason) {
+        alert('Please provide a reason for rejection.');
+        return;
+      }
+
+      fetch('/admin-portal/products/reject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: currentRejectProductId,
+          reason: reason
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Product rejected successfully!');
+          closeRejectModal();
+          location.reload();
+        } else {
+          alert('Error: ' + (data.error || 'Failed to reject product'));
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to reject product. Please try again.');
+      });
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('rejectModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeRejectModal();
+      }
+    });
+  </script>
+</body>
+</html>

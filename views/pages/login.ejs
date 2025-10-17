@@ -1,77 +1,112 @@
 <%- include('../partials/header') %>
 
-<!-- Login Section -->
-<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--space-16) 0;">
-  <div class="container">
-    <div style="max-width: 400px; margin: 0 auto;">
+<!-- Login Section with Tailwind -->
+<section class="min-h-screen flex items-center justify-center py-16 bg-gradient-to-br from-neutral-50 to-neutral-100">
+  <div class="container mx-auto px-4">
+    <div class="max-w-md mx-auto">
       <!-- Login Card -->
-      <div class="card" style="padding: var(--space-8); box-shadow: var(--shadow-xl);">
-        <div style="text-align: center; margin-bottom: var(--space-8);">
-          <div style="width: 80px; height: 80px; background: var(--color-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: var(--font-size-3xl);">
+      <div class="bg-white rounded-2xl shadow-2xl p-8 animate__animated animate__fadeInUp"
+           data-aos="zoom-in">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div class="w-20 h-20 bg-rwanda-gradient mx-auto mb-4 rounded-full flex items-center justify-center text-3xl animate-pulse">
             🔑
           </div>
-          <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-2);">
+          <h1 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">
             Welcome Back
           </h1>
-          <p style="color: var(--color-gray-600);">
+          <p class="text-neutral-600">
             Sign in to your Ecommerce Rwanda account
           </p>
         </div>
 
+        <!-- Error Message -->
         <% if (typeof error !== 'undefined' && error) { %>
-          <div style="background: var(--color-error-light); border: 1px solid var(--color-error); color: var(--color-error); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+          <div class="bg-error-50 border border-error-200 text-error-700 p-4 rounded-lg mb-6 text-sm animate__animated animate__shake"
+               data-aos="shake">
             ⚠️ <%= error %>
           </div>
         <% } %>
 
-        <form action="/login" method="POST" class="admin-form">
-          <div class="form-group">
-            <label for="email" class="form-label">Email Address</label>
+        <!-- Login Form -->
+        <form action="/login" method="POST" class="space-y-6">
+          <div>
+            <label for="email" class="block text-sm font-medium text-neutral-700 mb-2">
+              Email Address
+            </label>
             <input type="email"
                    id="email"
                    name="email"
                    placeholder="Enter your email address"
-                   class="form-input"
-                   required
-                   style="margin-bottom: var(--space-4);">
+                   class="form-input-rwanda w-full"
+                   required>
           </div>
 
-          <div class="form-group">
-            <label for="password" class="form-label">Password</label>
+          <div>
+            <label for="password" class="block text-sm font-medium text-neutral-700 mb-2">
+              Password
+            </label>
             <input type="password"
                    id="password"
                    name="password"
                    placeholder="Enter your password"
-                   class="form-input"
-                   required
-                   style="margin-bottom: var(--space-6);">
+                   class="form-input-rwanda w-full"
+                   required>
           </div>
 
-          <button type="submit" class="btn btn--primary" style="width: 100%; margin-bottom: var(--space-4);">
+          <button type="submit"
+                  class="btn-rwanda w-full text-lg py-3 animate-glow">
             🔑 Sign In
           </button>
 
-          <div style="text-align: center;">
-            <a href="/register" style="color: var(--color-primary); text-decoration: none; font-weight: var(--font-weight-medium);">
+          <div class="text-center">
+            <a href="/register"
+               class="text-rwanda-yellow hover:text-yellow-600 font-medium transition-colors duration-200">
               Don't have an account? Create one here
             </a>
           </div>
         </form>
 
-        <!-- Demo Credentials -->
-        <div style="margin-top: var(--space-8); padding: var(--space-4); background: var(--color-gray-50); border-radius: var(--radius-md);">
-          <h4 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-gray-700); margin-bottom: var(--space-2);">
-            🚀 Demo Credentials
-          </h4>
-          <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin-bottom: var(--space-2);">
-            <strong>Admin:</strong> admin@ecommerce.com / admin123
-          </p>
-          <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin-bottom: var(--space-2);">
-            <strong>Supplier:</strong> supplier@ecommerce.com / supplier123
-          </p>
-          <p style="font-size: var(--font-size-xs); color: var(--color-gray-600);">
-            <strong>Customer:</strong> test@example.com / password123
-          </p>
+        <!-- Demo Login Options -->
+        <div class="mt-8 space-y-4">
+          <div class="text-center">
+            <p class="text-neutral-600 text-sm mb-4">Or try the demo accounts:</p>
+          </div>
+
+          <!-- Demo Login Buttons -->
+          <div class="grid grid-cols-1 gap-3">
+            <a href="/demo/admin"
+               class="bg-gradient-to-r from-error to-red-600 hover:from-error-600 hover:to-red-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-center animate-glow">
+              👑 Login as Admin
+            </a>
+            <a href="/demo/supplier"
+               class="bg-gradient-to-r from-warning to-yellow-500 hover:from-warning-600 hover:to-yellow-600 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-center animate-float">
+              🏪 Login as Supplier
+            </a>
+            <a href="/demo/customer"
+               class="bg-gradient-to-r from-success to-green-600 hover:from-success-600 hover:to-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-center animate-bounce">
+              🛍️ Login as Customer
+            </a>
+          </div>
+
+          <!-- Demo Credentials Info -->
+          <div class="mt-6 p-4 bg-rwanda-gradient bg-opacity-10 rounded-lg border border-primary border-opacity-20">
+            <h4 class="text-sm font-semibold text-primary mb-3 flex items-center gap-2">
+              🚀 Demo Credentials (Password: demo123)
+            </h4>
+            <div class="space-y-2 text-xs">
+              <p class="text-neutral-600">
+                <strong class="text-rwanda-yellow">Admin:</strong> demo@admin.com
+              </p>
+              <p class="text-neutral-600">
+                <strong class="text-rwanda-yellow">Supplier:</strong> demo@supplier.com
+              </p>
+              <p class="text-neutral-600">
+                <strong class="text-rwanda-yellow">Customer:</strong> demo@customer.com
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

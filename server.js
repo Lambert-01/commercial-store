@@ -78,6 +78,12 @@ app.use('/orders', require('./src/routes/orderRoutes'));
 app.use('/supplier', require('./src/routes/supplierRoutes'));
 app.use('/admin', require('./src/routes/adminRoutes'));
 
+// Admin Portal - Independent admin interface
+app.use('/admin-portal', require('./src/routes/adminPortalRoutes'));
+
+// Order processing route (POST from checkout form)
+app.post('/orders/process-checkout', require('./src/controllers/orderController').processCheckout);
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({

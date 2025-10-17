@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+
+  <style>
+    .admin-gradient {
+      background: linear-gradient(135deg, #00A86B 0%, #059669 100%);
+    }
+  </style>
+</head>
+<body class="bg-neutral-900 text-white min-h-screen">
+  <!-- Admin Header -->
+  <header class="admin-gradient shadow-lg">
+    <div class="container mx-auto px-4 py-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+            <span class="text-2xl">🇷🇼</span>
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold">Admin Portal</h1>
+            <p class="text-white text-opacity-80">Order Tracking & Management</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a href="/admin-portal" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all duration-200">
+            Dashboard
+          </a>
+          <a href="/logout" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all duration-200">
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Request ID for debugging -->
+    <% if (typeof requestId !== 'undefined') { %>
+      <div class="bg-primary bg-opacity-20 border border-primary border-opacity-30 rounded-lg p-3 mb-6">
+        <p class="text-primary text-sm font-mono">Request ID: <%= requestId %></p>
+      </div>
+    <% } %>
+
+    <!-- Page Header -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold mb-2 flex items-center gap-3">
+        <span class="text-4xl">📋</span>
+        Order Tracking
+      </h2>
+      <p class="text-neutral-400 text-lg">
+        Monitor and manage all orders across the platform
+      </p>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="bg-neutral-800 rounded-xl overflow-hidden">
+      <div class="bg-neutral-700 px-6 py-4 border-b border-neutral-600">
+        <h3 class="text-xl font-semibold">
+          All Orders (<%= orders.length %> on this page)
+        </h3>
+      </div>
+
+      <% if (orders && orders.length > 0) { %>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-neutral-700">
+              <tr>
+                <th class="px-6 py-4 text-left text-neutral-300 font-semibold">Order</th>
+                <th class="px-6 py-4 text-left text-neutral-300 font-semibold">Customer</th>
+                <th class="px-6 py-4 text-left text-neutral-300 font-semibold">Items</th>
+                <th class="px-6 py-4 text-left text-neutral-300 font-semibold">Total</th>
+                <th class="px-6 py-4 text-left text-neutral-300 font-semibold">Status</th>
+                <th class="px-6 py-4 text-left text-neutral-300 font-semibold">Date</th>
+                <th class="px-6 py-4 text-left text-neutral-300 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-neutral-700">
+              <% orders.forEach((order, index) => { %>
+                <tr class="hover:bg-neutral-700 transition-colors duration-200">
+                  <td class="px-6 py-4">
+                    <span class="font-mono text-sm text-primary font-medium">
+                      #<%= order._id.toString().substr(-8) %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div>
+                      <div class="font-semibold text-white"><%= order.customer?.name || 'Unknown' %></div>
+                      <div class="text-neutral-400 text-sm"><%= order.customer?.email || '' %></div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span class="text-neutral-300">
+                      <%= order.items?.length || 0 %> item(s)
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span class="font-semibold text-rwanda-yellow">
+                      <%= order.total?.toLocaleString() || 0 %> RWF
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <select onchange="updateOrderStatus('<%= order._id %>', this.value)"
+                            class="bg-neutral-700 text-white text-sm rounded px-2 py-1 border-none focus:ring-2 focus:ring-primary">
+                      <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                      <option value="confirmed" <%= order.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+                      <option value="processing" <%= order.status === 'processing' ? 'selected' : '' %>>Processing</option>
+                      <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                      <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                      <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                    </select>
+                  </td>
+                  <td class="px-6 py-4 text-neutral-400 text-sm">
+                    <%= new Date(order.createdAt).toLocaleDateString() %>
+                  </td>
+                  <td class="px-6 py-4">
+                    <button onclick="viewOrderDetails('<%= order._id %>')"
+                            class="bg-primary hover:bg-primary-600 text-white px-3 py-2 rounded text-sm transition-colors duration-200">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+          <div class="bg-neutral-700 px-6 py-4 flex items-center justify-between">
+            <div class="text-neutral-400 text-sm">
+              Page <%= currentPage %> of <%= totalPages %>
+            </div>
+            <div class="flex gap-2">
+              <% if (currentPage > 1) { %>
+                <a href="?page=<%= currentPage - 1 %>"
+                   class="bg-neutral-600 hover:bg-neutral-500 text-white px-3 py-2 rounded transition-colors duration-200">
+                  Previous
+                </a>
+              <% } %>
+
+              <% if (currentPage < totalPages) { %>
+                <a href="?page=<%= currentPage + 1 %>"
+                   class="bg-primary hover:bg-primary-600 text-white px-3 py-2 rounded transition-colors duration-200">
+                  Next
+                </a>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+
+      <% } else { %>
+        <div class="text-center py-16">
+          <div class="text-6xl mb-4">📭</div>
+          <h3 class="text-xl font-semibold text-neutral-300 mb-2">No Orders Found</h3>
+          <p class="text-neutral-400">No orders match your current criteria.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Order Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+      <div class="bg-neutral-800 rounded-xl p-6 text-center">
+        <div class="text-3xl mb-2">⏳</div>
+        <div class="text-2xl font-bold text-warning mb-1">
+          <%= orders.filter(o => o.status === 'pending').length %>
+        </div>
+        <div class="text-neutral-400">Pending</div>
+      </div>
+
+      <div class="bg-neutral-800 rounded-xl p-6 text-center">
+        <div class="text-3xl mb-2">🔄</div>
+        <div class="text-2xl font-bold text-primary mb-1">
+          <%= orders.filter(o => o.status === 'processing').length %>
+        </div>
+        <div class="text-neutral-400">Processing</div>
+      </div>
+
+      <div class="bg-neutral-800 rounded-xl p-6 text-center">
+        <div class="text-3xl mb-2">🚚</div>
+        <div class="text-2xl font-bold text-success mb-1">
+          <%= orders.filter(o => o.status === 'shipped' || o.status === 'delivered').length %>
+        </div>
+        <div class="text-neutral-400">Shipped/Delivered</div>
+      </div>
+
+      <div class="bg-neutral-800 rounded-xl p-6 text-center">
+        <div class="text-3xl mb-2">❌</div>
+        <div class="text-2xl font-bold text-error mb-1">
+          <%= orders.filter(o => o.status === 'cancelled').length %>
+        </div>
+        <div class="text-neutral-400">Cancelled</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Order Details Modal -->
+  <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-neutral-800 rounded-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+      <div class="flex justify-between items-center p-6 border-b border-neutral-700">
+        <h3 class="text-xl font-bold text-white">Order Details</h3>
+        <button onclick="closeOrderModal()" class="text-neutral-400 hover:text-white text-2xl">&times;</button>
+      </div>
+      <div id="orderDetailsContent" class="p-6">
+        <p class="text-neutral-400">Loading order details...</p>
+      </div>
+    </div>
+  </div>
+
+    <!-- Orders Data for JavaScript -->
+    <div id="ordersData" style="display: none;"><%= JSON.stringify(orders) %></div>
+
+  <!-- Scripts -->
+  <script>
+    // Pass orders data to JavaScript
+    const ordersData = JSON.parse(document.getElementById('ordersData').textContent);
+
+    function updateOrderStatus(orderId, newStatus) {
+      fetch('/admin-portal/orders/status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderId, status: newStatus })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Show success feedback
+          const select = event.target;
+          select.classList.add('bg-success', 'bg-opacity-20');
+          setTimeout(() => {
+            select.classList.remove('bg-success', 'bg-opacity-20');
+          }, 1000);
+        } else {
+          alert('Error: ' + (data.error || 'Failed to update order status'));
+          // Reset select to original value
+          location.reload();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to update order status. Please try again.');
+        location.reload();
+      });
+    }
+
+    function viewOrderDetails(orderId) {
+      // Find order data
+      const order = ordersData.find(o => o._id === orderId);
+
+      const modal = document.getElementById('orderModal');
+      const content = document.getElementById('orderDetailsContent');
+
+      if (order) {
+        const totalItems = order.items ? order.items.length : 0;
+        const totalQuantity = order.items ? order.items.reduce((sum, item) => sum + (item.quantity || 0), 0) : 0;
+
+        content.innerHTML = `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 class="font-semibold text-white mb-3">Order Information</h4>
+                <div class="space-y-2 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-neutral-400">Order ID:</span>
+                    <span class="text-white font-mono">${order._id.toString().substr(-8)}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-neutral-400">Date:</span>
+                    <span class="text-white">${new Date(order.createdAt).toLocaleString()}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-neutral-400">Status:</span>
+                    <span class="text-white capitalize">${order.status || 'unknown'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-semibold text-white mb-3">Customer Information</h4>
+                <div class="space-y-2 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-neutral-400">Name:</span>
+                    <span class="text-white">${order.customer?.name || 'Unknown'}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-neutral-400">Email:</span>
+                    <span class="text-white">${order.customer?.email || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-white mb-3">Order Items (${totalItems} items)</h4>
+              <div class="space-y-3">
+                ${order.items ? order.items.map(item => `
+                  <div class="bg-neutral-700 rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h5 class="font-medium text-white">${item.product?.name || 'Product name unavailable'}</h5>
+                        <p class="text-neutral-400 text-sm">${item.product?.description || 'No description'}</p>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-white font-semibold">${item.quantity} × ${item.price || 0} RWF</div>
+                        <div class="text-rwanda-yellow font-bold">${((item.quantity || 0) * (item.price || 0)).toLocaleString()} RWF</div>
+                      </div>
+                    </div>
+                  </div>
+                `).join('') : '<p class="text-neutral-400">No items in this order</p>'}
+              </div>
+            </div>
+
+            <div class="border-t border-neutral-700 pt-4">
+              <div class="flex justify-between items-center text-lg">
+                <span class="font-semibold text-white">Total Amount:</span>
+                <span class="font-bold text-rwanda-yellow text-xl">${order.total?.toLocaleString() || 0} RWF</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        content.innerHTML = '<p class="text-error">Order not found</p>';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeOrderModal() {
+      const modal = document.getElementById('orderModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('orderModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeOrderModal();
+      }
+    });
+  </script>
+</body>
+</html>

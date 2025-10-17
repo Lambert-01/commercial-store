@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Animate.css for animations */
+@import 'animate.css';
+
+/* Custom base styles */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-neutral-50 text-neutral-900;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', system-ui, sans-serif;
+    @apply font-bold leading-tight;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  /* Rwandan-themed buttons using correct Tailwind colors */
+  .btn-rwanda {
+    @apply bg-primary hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg;
+  }
+
+  .btn-rwanda-secondary {
+    @apply bg-secondary hover:bg-secondary-600 text-neutral-900 font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg;
+  }
+
+  .btn-rwanda-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-200;
+  }
+
+  /* Product cards with animations */
+  .product-card {
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-neutral-200;
+  }
+
+  .product-card-image {
+    @apply h-48 bg-gradient-to-br from-neutral-200 to-neutral-300 rounded-t-xl flex items-center justify-center text-6xl;
+  }
+
+  /* Status badges */
+  .status-badge-rwanda {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .status-badge-pending {
+    @apply bg-warning-100 text-warning-800;
+  }
+
+  .status-badge-approved {
+    @apply bg-success-100 text-success-800;
+  }
+
+  .status-badge-rejected {
+    @apply bg-error-100 text-error-800;
+  }
+
+  /* Hero section */
+  .hero-rwanda {
+    @apply bg-gradient-to-br from-primary via-primary-600 to-primary-700 text-white py-20 text-center;
+  }
+
+  /* Admin dashboard cards */
+  .admin-card {
+    @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-neutral-200;
+  }
+
+  .stat-card-rwanda {
+    @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-neutral-200 hover:-translate-y-1;
+  }
+
+  /* Form styles */
+  .form-rwanda {
+    @apply space-y-6;
+  }
+
+  .form-input-rwanda {
+    @apply w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all duration-200;
+  }
+
+  .form-label-rwanda {
+    @apply block text-sm font-medium text-neutral-700 mb-2;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .bg-rwanda-gradient {
+    background: linear-gradient(135deg, #00A86B 0%, #059669 100%);
+  }
+
+  .bg-rwanda-gradient-yellow {
+    background: linear-gradient(135deg, #F7D117 0%, #d97706 100%);
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { box-shadow: 0 0 20px rgba(0, 168, 107, 0.3); }
+    to { box-shadow: 0 0 30px rgba(0, 168, 107, 0.6); }
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

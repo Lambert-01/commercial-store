@@ -1,106 +1,199 @@
 <%- include('../partials/header') %>
 
-<!-- Page Header -->
-<div style="background: var(--color-gray-50); padding: var(--space-12) 0; margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-8)) var(--space-12);">
-  <div class="container">
-    <div style="text-align: center;">
-      <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
-        🛍️ All Products
+<!-- Products Section with Rwandan Design System -->
+<section class="py-12 bg-neutral-50 min-h-screen" data-aos="fade-up">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="mb-8" data-aos="fade-up" data-aos-delay="100">
+      <h1 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-4 flex items-center gap-3">
+        <span class="text-4xl">🛍️</span>
+        Rwandan Products
       </h1>
-      <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); max-width: 600px; margin: 0 auto;">
-        Discover amazing products from verified Rwandan suppliers. Shop with confidence using mobile money payments.
+      <p class="text-neutral-600 text-lg">
+        Discover amazing products from local Rwandan suppliers
       </p>
     </div>
-  </div>
-</div>
 
-<!-- Products Grid -->
-<section style="padding: var(--space-16) 0;">
-  <div class="container">
+    <!-- Request ID for debugging -->
+    <% if (typeof requestId !== 'undefined') { %>
+      <div class="bg-primary bg-opacity-10 border border-primary border-opacity-20 rounded-lg p-3 mb-6">
+        <p class="text-primary text-sm font-medium">Request ID: <%= requestId %></p>
+      </div>
+    <% } %>
+
     <% if (products && products.length > 0) { %>
-      <div class="products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-8);">
-        <% products.forEach(product => { %>
-          <article class="product-card card" style="position: relative; overflow: hidden;">
-            <!-- Product Image Placeholder -->
-            <div class="product-card__image" style="height: 200px; background: linear-gradient(135deg, var(--color-gray-200) 0%, var(--color-gray-300) 100%); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-4xl); margin-bottom: var(--space-6);">
+      <!-- Products Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% products.forEach((product, index) => { %>
+          <div class="product-card bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-neutral-200 overflow-hidden animate__animated animate__fadeInUp"
+               data-aos="fade-up"
+               data-aos-delay="<%= 200 + (index * 100) %>"
+               style="animation-delay: <%= index * 0.1 %>s;">
+
+            <!-- Product Image -->
+            <div class="product-card-image h-48 bg-gradient-to-br from-neutral-200 to-neutral-300 flex items-center justify-center text-6xl relative overflow-hidden">
               📦
+              <% if (product.stock < 10) { %>
+                <div class="absolute top-2 right-2 bg-warning text-warning-900 px-2 py-1 rounded-full text-xs font-bold">
+                  Low Stock
+                </div>
+              <% } %>
             </div>
 
             <!-- Product Info -->
-            <div class="product-card__content" style="padding: var(--space-6);">
-              <h3 class="product-card__title" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-3); color: var(--color-gray-900);">
-                <%= product.name %>
-              </h3>
+            <div class="p-6">
+              <div class="mb-4">
+                <h3 class="text-lg font-bold text-neutral-900 mb-2 line-clamp-2">
+                  <%= product.name %>
+                </h3>
+                <p class="text-neutral-600 text-sm mb-3 line-clamp-3">
+                  <%= product.description %>
+                </p>
 
-              <p class="product-card__description" style="color: var(--color-gray-600); margin-bottom: var(--space-4); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                <%= product.description %>
-              </p>
+                <!-- Supplier Info -->
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="text-xs text-neutral-500">by</span>
+                  <a href="/products/supplier/<%= product.supplier._id %>"
+                     class="text-primary hover:text-primary-600 font-medium text-sm transition-colors duration-200">
+                    <%= product.supplier?.name || 'Unknown Supplier' %>
+                  </a>
+                </div>
 
-              <!-- Price -->
-              <div class="product-card__price" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
-                <span style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-primary);">
-                  <%= product.price %> RWF
-                </span>
-                <span class="status-badge status-badge--active" style="font-size: var(--font-size-xs);">
-                  In Stock
-                </span>
+                <!-- Price and Stock -->
+                <div class="flex items-center justify-between">
+                  <div class="text-2xl font-bold text-rwanda-yellow">
+                    <%= product.price.toLocaleString() %> RWF
+                  </div>
+                  <div class="text-sm text-neutral-500">
+                    <%= product.stock %> in stock
+                  </div>
+                </div>
               </div>
 
-              <!-- Actions -->
-              <div class="product-card__actions" style="display: flex; gap: var(--space-3);">
-                <button class="btn btn--primary add-to-cart" data-product-id="<%= product._id %>" style="flex: 1;">
-                  🛒 Add to Cart
-                </button>
-                <a href="/products/<%= product._id %>" class="btn btn--outline" style="padding: var(--space-3) var(--space-4);">
-                  👁️ View
+              <!-- Action Buttons -->
+              <div class="flex gap-2">
+                <a href="/product/<%= product._id %>"
+                   class="flex-1 bg-primary hover:bg-primary-600 text-white text-center py-2 px-4 rounded-lg transition-colors duration-200 text-sm font-medium">
+                  View Details
                 </a>
+
+                <% if (isAuthenticated) { %>
+                  <form method="POST" action="/cart/add" class="inline">
+                    <input type="hidden" name="productId" value="<%= product._id %>">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit"
+                            class="btn-rwanda-secondary py-2 px-3 rounded-lg text-sm">
+                      🛒 Add
+                    </button>
+                  </form>
+                <% } else { %>
+                  <a href="/login"
+                     class="btn-rwanda-secondary py-2 px-3 rounded-lg text-sm"
+                     title="Login to add to cart">
+                    🔒 Login
+                  </a>
+                <% } %>
               </div>
             </div>
-
-            <!-- Supplier Badge -->
-            <div style="position: absolute; top: var(--space-4); right: var(--space-4);">
-              <span class="status-badge" style="background: rgba(0, 168, 107, 0.9); color: var(--color-white); font-size: var(--font-size-xs);">
-                Verified Supplier
-              </span>
-            </div>
-          </article>
+          </div>
         <% }); %>
       </div>
+
+      <!-- Products Summary -->
+      <div class="mt-12 bg-white rounded-xl shadow-lg p-6" data-aos="fade-up" data-aos-delay="800">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-neutral-900 mb-2">
+              Showing <%= products.length %> Rwandan Products
+            </h3>
+            <p class="text-neutral-600">
+              From <%= new Set(products.map(p => p.supplier._id)).size %> trusted local suppliers
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <!-- Filter Buttons (for future implementation) -->
+            <div class="flex gap-2">
+              <button class="bg-neutral-200 hover:bg-neutral-300 text-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 text-sm">
+                All Categories
+              </button>
+              <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm">
+                Price: Low to High
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <% } else { %>
       <!-- Empty State -->
-      <div style="text-align: center; padding: var(--space-20) 0;">
-        <div style="font-size: var(--font-size-4xl); margin-bottom: var(--space-6);">📦</div>
-        <h2 style="font-size: var(--font-size-2xl); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+      <div class="text-center py-16" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-32 h-32 bg-neutral-200 rounded-full flex items-center justify-center text-6xl mx-auto mb-6 animate-bounce">
+          📦
+        </div>
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-4">
           No Products Available
         </h2>
-        <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-8);">
-          Be the first to add products to our marketplace!
+        <p class="text-neutral-600 text-lg mb-8 max-w-md mx-auto">
+          We're working with local suppliers to bring you amazing Rwandan products. Check back soon!
         </p>
-        <a href="/supplier/register" class="btn btn--primary">
-          🏪 Become a Supplier
-        </a>
+
+        <% if (isSupplier) { %>
+          <div class="bg-primary bg-opacity-10 border border-primary border-opacity-20 rounded-lg p-6 inline-block mb-6">
+            <h3 class="font-semibold text-primary mb-2">Are you a supplier?</h3>
+            <p class="text-neutral-600 text-sm mb-4">Add your products to our marketplace</p>
+            <a href="/supplier/add-product"
+               class="btn-rwanda text-center">
+              ➕ Add Your Products
+            </a>
+          </div>
+        <% } %>
+
+        <% if (isAdmin) { %>
+          <div class="bg-warning bg-opacity-10 border border-warning border-opacity-20 rounded-lg p-6 inline-block">
+            <h3 class="font-semibold text-warning-800 mb-2">Admin Action Required</h3>
+            <p class="text-neutral-600 text-sm mb-4">There are products pending approval</p>
+            <a href="/admin-portal/products"
+               class="bg-warning hover:bg-yellow-500 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+              Review Products
+            </a>
+          </div>
+        <% } %>
       </div>
     <% } %>
-  </div>
-</section>
 
-<!-- Newsletter Signup -->
-<section style="padding: var(--space-16) 0; background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%); color: var(--color-white);">
-  <div class="container">
-    <div style="text-align: center; max-width: 500px; margin: 0 auto;">
-      <h2 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-4);">
-        📧 Stay Updated
-      </h2>
-      <p style="font-size: var(--font-size-lg); margin-bottom: var(--space-8); opacity: 0.9;">
-        Get notified about new products, special offers, and supplier updates.
-      </p>
-      <form style="display: flex; gap: var(--space-3);">
-        <input type="email" placeholder="Enter your email" style="flex: 1; padding: var(--space-3) var(--space-4); border: none; border-radius: var(--radius-md); font-size: var(--font-size-base);" required>
-        <button type="submit" class="btn btn--primary">
-          Subscribe
-        </button>
-      </form>
-    </div>
+    <!-- Featured Suppliers Section -->
+    <% if (products && products.length > 0) { %>
+      <div class="mt-16" data-aos="fade-up" data-aos-delay="900">
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-8 text-center">
+          Featured Suppliers
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <% const suppliers = [...new Set(products.map(p => p.supplier._id))].slice(0, 3); %>
+          <% suppliers.forEach(supplierId => { %>
+            <% const supplierProducts = products.filter(p => p.supplier._id.toString() === supplierId.toString()); %>
+            <% const supplier = supplierProducts[0]?.supplier; %>
+            <% if (supplier) { %>
+              <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                  🏪
+                </div>
+                <h3 class="text-lg font-bold text-neutral-900 mb-2"><%= supplier.name %></h3>
+                <p class="text-neutral-600 text-sm mb-4">
+                  <%= supplierProducts.length %> product<%= supplierProducts.length !== 1 ? 's' : '' %> available
+                </p>
+                <a href="/products/supplier/<%= supplier._id %>"
+                   class="btn-rwanda-secondary text-sm px-4 py-2">
+                  Visit Store
+                </a>
+              </div>
+            <% } %>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
   </div>
 </section>
 

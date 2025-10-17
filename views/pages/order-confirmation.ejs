@@ -1,0 +1,105 @@
+<%- include('../partials/header') %>
+
+<!-- Order Confirmation Section -->
+<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--space-16) 0;">
+  <div class="container">
+    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+      <!-- Success Animation -->
+      <div style="width: 120px; height: 120px; background: var(--color-success); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-8); font-size: var(--font-size-4xl);">
+        ✅
+      </div>
+
+      <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+        Order Confirmed! 🎉
+      </h1>
+
+      <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-8);">
+        Thank you for your order! We've received it and will start processing right away.
+      </p>
+
+      <!-- Order Summary Card -->
+      <div class="card" style="padding: var(--space-8); margin-bottom: var(--space-8); text-align: left;">
+        <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-gray-900); text-align: center;">
+          Order Summary
+        </h2>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: var(--font-size-lg); color: var(--color-gray-700);">
+            Order Number:
+          </span>
+          <span style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-primary);">
+            #<%= order._id.toString().slice(-8) %>
+          </span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: var(--font-size-lg); color: var(--color-gray-700);">
+            Total Amount:
+          </span>
+          <span style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-primary);">
+            <%= order.total %> RWF
+          </span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+          <span style="font-size: var(--font-size-lg); color: var(--color-gray-700);">
+            Status:
+          </span>
+          <span class="status-badge status-badge--pending">
+            <%= order.status.charAt(0).toUpperCase() + order.status.slice(1) %>
+          </span>
+        </div>
+
+        <div style="background: var(--color-info-light); padding: var(--space-4); border-radius: var(--radius-md);">
+          <p style="font-size: var(--font-size-sm); color: var(--color-info); margin: 0;">
+            📧 We've sent a confirmation email to your registered email address with all the order details.
+          </p>
+        </div>
+      </div>
+
+      <!-- What's Next -->
+      <div style="background: var(--color-gray-50); padding: var(--space-6); border-radius: var(--radius-lg); margin-bottom: var(--space-8);">
+        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+          What's Next? 🚀
+        </h3>
+
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="font-size: var(--font-size-lg);">1️⃣</span>
+          <span style="color: var(--color-gray-700);">Our suppliers will prepare your items</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="font-size: var(--font-size-lg);">2️⃣</span>
+          <span style="color: var(--color-gray-700);">You'll receive SMS updates on your order status</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <span style="font-size: var(--font-size-lg);">3️⃣</span>
+          <span style="color: var(--color-gray-700);">Your order will be delivered to your address</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+        <a href="/orders/history" class="btn btn--primary">
+          📋 View Order History
+        </a>
+        <a href="/products" class="btn btn--outline">
+          🛍️ Continue Shopping
+        </a>
+      </div>
+
+      <!-- Contact Info -->
+      <div style="margin-top: var(--space-8); padding: var(--space-4); background: var(--color-gray-50); border-radius: var(--radius-md);">
+        <p style="font-size: var(--font-size-sm); color: var(--color-gray-600); margin: 0;">
+          📞 Need help? Contact our support team at
+          <a href="tel:+250788123456" style="color: var(--color-primary); font-weight: var(--font-weight-medium);">
+            +250 788 123 456
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,10 +1,223 @@
 <%- include('../partials/header') %>
 
-<h2><%= product.name %></h2>
-<img src="<%= product.image %>" alt="<%= product.name %>">
-<p><%= product.description %></p>
-<p>Price: $<%= product.price %></p>
-<p>Stock: <%= product.stock %></p>
-<button class="add-to-cart" data-product-id="<%= product._id %>">Add to Cart</button>
+<!-- Product Details Section with Rwandan Design System -->
+<section class="py-12 bg-neutral-50 min-h-screen" data-aos="fade-up">
+  <div class="container mx-auto px-4">
+    <!-- Request ID for debugging -->
+    <% if (typeof requestId !== 'undefined') { %>
+      <div class="bg-primary bg-opacity-10 border border-primary border-opacity-20 rounded-lg p-3 mb-6">
+        <p class="text-primary text-sm font-medium">Request ID: <%= requestId %></p>
+      </div>
+    <% } %>
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="mb-8" data-aos="fade-up" data-aos-delay="100">
+      <ol class="flex items-center space-x-2 text-sm text-neutral-600">
+        <li><a href="/" class="hover:text-primary transition-colors duration-200">Home</a></li>
+        <li class="text-neutral-400">/</li>
+        <li><a href="/products" class="hover:text-primary transition-colors duration-200">Products</a></li>
+        <li class="text-neutral-400">/</li>
+        <li><a href="/products/supplier/<%= product.supplier._id %>" class="hover:text-primary transition-colors duration-200"><%= product.supplier.name %></a></li>
+        <li class="text-neutral-400">/</li>
+        <li class="text-primary font-medium"><%= product.name %></li>
+      </ol>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Product Image -->
+      <div class="bg-white rounded-xl shadow-lg p-8" data-aos="fade-right" data-aos-delay="200">
+        <div class="aspect-square bg-gradient-to-br from-neutral-200 to-neutral-300 rounded-xl flex items-center justify-center text-8xl mb-6">
+          📦
+        </div>
+
+        <!-- Product Gallery Thumbnails (placeholder for future) -->
+        <div class="flex gap-2 justify-center">
+          <div class="w-16 h-16 bg-neutral-300 rounded-lg flex items-center justify-center text-2xl opacity-50">📦</div>
+          <div class="w-16 h-16 bg-neutral-300 rounded-lg flex items-center justify-center text-2xl opacity-50">📦</div>
+          <div class="w-16 h-16 bg-neutral-300 rounded-lg flex items-center justify-center text-2xl opacity-50">📦</div>
+        </div>
+      </div>
+
+      <!-- Product Information -->
+      <div class="space-y-6" data-aos="fade-left" data-aos-delay="300">
+        <!-- Product Title and Basic Info -->
+        <div>
+          <h1 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
+            <%= product.name %>
+          </h1>
+
+          <!-- Supplier Info -->
+          <div class="flex items-center gap-3 mb-6 p-4 bg-primary bg-opacity-5 rounded-lg border border-primary border-opacity-10">
+            <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-xl">
+              🏪
+            </div>
+            <div>
+              <p class="text-neutral-600 text-sm">Sold by</p>
+              <a href="/products/supplier/<%= product.supplier._id %>"
+                 class="text-primary hover:text-primary-600 font-semibold transition-colors duration-200">
+                <%= product.supplier.name %>
+              </a>
+            </div>
+          </div>
+
+          <!-- Price and Stock -->
+          <div class="flex items-center gap-6 mb-6">
+            <div class="text-4xl font-bold text-rwanda-yellow">
+              <%= product.price.toLocaleString() %> RWF
+            </div>
+
+            <% if (product.stock > 0) { %>
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-success rounded-full"></span>
+                <span class="text-success font-medium"><%= product.stock %> in stock</span>
+              </div>
+            <% } else { %>
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-error rounded-full"></span>
+                <span class="text-error font-medium">Out of stock</span>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-neutral-900 mb-4">Description</h3>
+          <p class="text-neutral-600 leading-relaxed">
+            <%= product.description %>
+          </p>
+        </div>
+
+        <!-- Add to Cart Section -->
+        <% if (product.stock > 0) { %>
+          <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-xl font-bold text-neutral-900 mb-4">Add to Cart</h3>
+
+            <% if (isAuthenticated) { %>
+              <form method="POST" action="/cart/add" class="flex gap-4 items-end">
+                <input type="hidden" name="productId" value="<%= product._id %>">
+
+                <div class="flex-1">
+                  <label class="block text-sm font-medium text-neutral-700 mb-2">Quantity</label>
+                  <select name="quantity"
+                          class="form-input-rwanda w-full"
+                          data-price="<%= product.price %>"
+                          onchange="updateTotal(this.getAttribute('data-price'), this.value)">
+                    <% for (let i = 1; i <= Math.min(product.stock, 10); i++) { %>
+                      <option value="<%= i %>" <%= i === 1 ? 'selected' : '' %>><%= i %></option>
+                    <% } %>
+                  </select>
+                </div>
+
+                <div class="flex-1">
+                  <label class="block text-sm font-medium text-neutral-700 mb-2">Total Price</label>
+                  <div class="text-2xl font-bold text-rwanda-yellow" id="totalPrice">
+                    <%= product.price.toLocaleString() %> RWF
+                  </div>
+                </div>
+
+                <div>
+                  <button type="submit"
+                          class="btn-rwanda h-12 px-8">
+                    🛒 Add to Cart
+                  </button>
+                </div>
+              </form>
+            <% } else { %>
+              <div class="text-center">
+                <p class="text-neutral-600 mb-4">Login to add this product to your cart</p>
+                <a href="/login"
+                   class="btn-rwanda">
+                  🔑 Login to Purchase
+                </a>
+              </div>
+            <% } %>
+          </div>
+        <% } %>
+
+        <!-- Product Features -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold text-neutral-900 mb-4">Product Features</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 bg-success bg-opacity-10 rounded-full flex items-center justify-center text-success">✅</span>
+              <span class="text-neutral-600">Authentic Rwandan product</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-primary">🏪</span>
+              <span class="text-neutral-600">Verified local supplier</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 bg-warning bg-opacity-10 rounded-full flex items-center justify-center text-warning">📱</span>
+              <span class="text-neutral-600">Mobile money payments</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 bg-accent bg-opacity-10 rounded-full flex items-center justify-center text-accent">🚚</span>
+              <span class="text-neutral-600">Fast local delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <% if (typeof relatedProducts !== 'undefined' && relatedProducts.length > 0) { %>
+      <div class="mt-16" data-aos="fade-up" data-aos-delay="500">
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-8 text-center">
+          More from <%= product.supplier.name %>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <% relatedProducts.forEach((relatedProduct, index) => { %>
+            <div class="product-card bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-neutral-200 overflow-hidden"
+                 data-aos="fade-up"
+                 data-aos-delay="<%= 600 + (index * 100) %>">
+
+              <!-- Product Image -->
+              <div class="product-card-image h-32 bg-gradient-to-br from-neutral-200 to-neutral-300 flex items-center justify-center text-4xl">
+                📦
+              </div>
+
+              <!-- Product Info -->
+              <div class="p-4">
+                <h3 class="font-bold text-neutral-900 mb-2 line-clamp-2 text-sm">
+                  <%= relatedProduct.name %>
+                </h3>
+                <div class="text-lg font-bold text-rwanda-yellow mb-3">
+                  <%= relatedProduct.price.toLocaleString() %> RWF
+                </div>
+                <a href="/product/<%= relatedProduct._id %>"
+                   class="btn-rwanda text-xs px-3 py-2 w-full text-center">
+                  View Product
+                </a>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Supplier Store CTA -->
+    <div class="mt-16 bg-gradient-to-r from-primary to-primary-600 rounded-xl p-8 text-white text-center" data-aos="fade-up" data-aos-delay="700">
+      <h3 class="text-2xl font-bold mb-4">
+        Discover More from <%= product.supplier.name %>
+      </h3>
+      <p class="text-white text-opacity-90 mb-6">
+        Explore other amazing products from this trusted Rwandan supplier
+      </p>
+      <a href="/products/supplier/<%= product.supplier._id %>"
+         class="bg-white text-primary hover:bg-neutral-100 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+        🏪 Visit Supplier Store
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function updateTotal(price, quantity) {
+    const total = price * quantity;
+    document.getElementById('totalPrice').textContent = total.toLocaleString() + ' RWF';
+  }
+</script>
 
 <%- include('../partials/footer') %>

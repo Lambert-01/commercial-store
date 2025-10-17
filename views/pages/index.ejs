@@ -1,99 +1,163 @@
 <%- include('../partials/header') %>
 
-<!-- Hero Section -->
-<section class="hero" style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%); color: var(--color-white); padding: var(--space-20) 0; text-align: center;">
-  <div class="container">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-white);">
-        🇷🇼 Welcome to Rwanda's Premier Marketplace
-      </h1>
-      <p style="font-size: var(--font-size-xl); margin-bottom: var(--space-8); opacity: 0.9; line-height: 1.6;">
+<!-- Hero Section with Tailwind + AOS Animations -->
+<section class="hero-rwanda min-h-screen flex items-center justify-center" data-aos="fade-up" data-aos-duration="1000">
+  <div class="container mx-auto px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+      <!-- Animated Hero Content -->
+      <div class="animate__animated animate__fadeInUp" data-aos="zoom-in" data-aos-delay="200">
+        <div class="flex items-center justify-center gap-4 mb-8">
+          <div class="text-6xl animate-bounce">🇷🇼</div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-shadow">
+            Welcome to Rwanda's Premier Marketplace
+          </h1>
+        </div>
+      </div>
+
+      <p class="text-lg md:text-xl lg:text-2xl mb-12 opacity-90 leading-relaxed animate__animated animate__fadeInUp animate__delay-400ms"
+         data-aos="fade-up"
+         data-aos-delay="400">
         Discover amazing products from local Rwandan suppliers. Shop with confidence using MTN Mobile Money and Airtel Money.
-        Support local businesses and grow Rwanda's digital economy.
+        <span class="font-semibold text-rwanda-yellow">Support local businesses and grow Rwanda's digital economy.</span>
       </p>
-      <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
-        <a href="/products" class="btn btn--primary" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8);">
+
+      <!-- CTA Buttons with animations -->
+      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate__animated animate__fadeInUp animate__delay-600ms"
+           data-aos="fade-up"
+           data-aos-delay="600">
+        <a href="/products"
+           class="btn-rwanda text-lg px-8 py-4 animate-glow hover:animate-pulse">
           🛍️ Browse Products
         </a>
-        <a href="/supplier/register" class="btn btn--outline" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8); color: var(--color-white); border-color: var(--color-white);">
+        <a href="/supplier/register"
+           class="btn-rwanda-secondary text-lg px-8 py-4">
           🏪 Become a Supplier
         </a>
+      </div>
+
+      <!-- Trust indicators -->
+      <div class="mt-16 flex flex-wrap justify-center items-center gap-8 opacity-80 animate__animated animate__fadeInUp animate__delay-800ms"
+           data-aos="fade-up"
+           data-aos-delay="800">
+        <div class="flex items-center gap-2 bg-white bg-opacity-20 px-4 py-2 rounded-full">
+          <span class="text-2xl">🔒</span>
+          <span class="font-medium">Secure Payments</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white bg-opacity-20 px-4 py-2 rounded-full">
+          <span class="text-2xl">📱</span>
+          <span class="font-medium">Mobile Money</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white bg-opacity-20 px-4 py-2 rounded-full">
+          <span class="text-2xl">🏆</span>
+          <span class="font-medium">Verified Suppliers</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features Section -->
-<section style="padding: var(--space-20) 0; background-color: var(--color-white);">
-  <div class="container">
-    <div style="text-align: center; margin-bottom: var(--space-16);">
-      <h2 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
-        Why Choose Ecommerce Rwanda?
+<!-- Features Section with Tailwind Grid -->
+<section class="py-20 bg-white" data-aos="fade-up" data-aos-duration="1000">
+  <div class="container mx-auto px-4">
+    <!-- Section Header -->
+    <div class="text-center mb-16" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
+        Why Choose <span class="text-rwanda-yellow">Ecommerce Rwanda?</span>
       </h2>
-      <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); max-width: 600px; margin: 0 auto;">
+      <p class="text-lg md:text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
         We're building Rwanda's most trusted marketplace, connecting customers with local suppliers across the country.
       </p>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-8);">
-      <!-- Feature 1 -->
-      <div class="card" style="text-align: center; padding: var(--space-8);">
-        <div style="width: 80px; height: 80px; background: var(--color-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); font-size: var(--font-size-3xl);">
+    <!-- Features Grid with animations -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Feature 1: Mobile Money -->
+      <div class="product-card text-center p-8 animate__animated animate__fadeInUp animate__delay-200ms"
+           data-aos="flip-left"
+           data-aos-delay="300">
+        <div class="w-20 h-20 bg-primary mx-auto mb-6 rounded-full flex items-center justify-center text-3xl animate-float">
           📱
         </div>
-        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-neutral-900">
           Mobile Money Integration
         </h3>
-        <p style="color: var(--color-gray-600); line-height: 1.6;">
-          Pay securely with MTN Mobile Money and Airtel Money. No bank account required - just use your phone!
+        <p class="text-neutral-600 leading-relaxed">
+          Pay securely with <strong class="text-rwanda-yellow">MTN Mobile Money</strong> and <strong class="text-rwanda-yellow">Airtel Money</strong>.
+          No bank account required - just use your phone!
         </p>
       </div>
 
-      <!-- Feature 2 -->
-      <div class="card" style="text-align: center; padding: var(--space-8);">
-        <div style="width: 80px; height: 80px; background: var(--color-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); font-size: var(--font-size-3xl);">
+      <!-- Feature 2: Local Suppliers -->
+      <div class="product-card text-center p-8 animate__animated animate__fadeInUp animate__delay-400ms"
+           data-aos="flip-left"
+           data-aos-delay="500">
+        <div class="w-20 h-20 bg-secondary mx-auto mb-6 rounded-full flex items-center justify-center text-3xl animate-float">
           🏪
         </div>
-        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-neutral-900">
           Local Suppliers
         </h3>
-        <p style="color: var(--color-gray-600); line-height: 1.6;">
-          Support Rwandan businesses and entrepreneurs. Every purchase helps grow our local economy.
+        <p class="text-neutral-600 leading-relaxed">
+          Support <strong class="text-rwanda-yellow">Rwandan businesses</strong> and entrepreneurs.
+          Every purchase helps grow our local economy.
         </p>
       </div>
 
-      <!-- Feature 3 -->
-      <div class="card" style="text-align: center; padding: var(--space-8);">
-        <div style="width: 80px; height: 80px; background: var(--color-accent); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); font-size: var(--font-size-3xl);">
+      <!-- Feature 3: Fast Delivery -->
+      <div class="product-card text-center p-8 animate__animated animate__fadeInUp animate__delay-600ms"
+           data-aos="flip-left"
+           data-aos-delay="700">
+        <div class="w-20 h-20 bg-accent mx-auto mb-6 rounded-full flex items-center justify-center text-3xl animate-float">
           🚚
         </div>
-        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-neutral-900">
           Fast Delivery
         </h3>
-        <p style="color: var(--color-gray-600); line-height: 1.6;">
-          Quick and reliable delivery across Kigali and major Rwandan cities. Track your orders in real-time.
+        <p class="text-neutral-600 leading-relaxed">
+          Quick and reliable delivery across <strong class="text-rwanda-yellow">Kigali</strong> and major Rwandan cities.
+          Track your orders in real-time.
         </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA Section -->
-<section style="padding: var(--space-20) 0; background: linear-gradient(135deg, var(--color-gray-900) 0%, var(--color-gray-800) 100%); color: var(--color-white);">
-  <div class="container">
-    <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-      <h2 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6);">
-        Ready to Start Shopping?
+<!-- CTA Section with modern design -->
+<section class="py-20 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white relative overflow-hidden"
+         data-aos="fade-up"
+         data-aos-duration="1000">
+  <!-- Background decoration -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 left-10 text-8xl animate-pulse">🛒</div>
+    <div class="absolute bottom-10 right-10 text-8xl animate-pulse">🏪</div>
+  </div>
+
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate__animated animate__fadeInUp"
+          data-aos="zoom-in"
+          data-aos-delay="200">
+        Ready to Start Shopping? 🚀
       </h2>
-      <p style="font-size: var(--font-size-lg); margin-bottom: var(--space-8); opacity: 0.9;">
+      <p class="text-lg md:text-xl mb-8 opacity-90 animate__animated animate__fadeInUp animate__delay-400ms"
+         data-aos="fade-up"
+         data-aos-delay="400">
         Join thousands of satisfied customers already shopping on Rwanda's most trusted marketplace.
       </p>
-      <a href="/register" class="btn btn--primary" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8); margin-right: var(--space-4);">
-        🚀 Get Started Now
-      </a>
-      <a href="/products" class="btn btn--outline" style="font-size: var(--font-size-lg); padding: var(--space-4) var(--space-8); color: var(--color-white); border-color: var(--color-white);">
-        Browse Products
-      </a>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-6 justify-center animate__animated animate__fadeInUp animate__delay-600ms"
+           data-aos="fade-up"
+           data-aos-delay="600">
+        <a href="/register"
+           class="btn-rwanda text-lg px-8 py-4 animate-glow">
+          🚀 Get Started Now
+        </a>
+        <a href="/products"
+           class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-neutral-900 font-medium py-3 px-8 rounded-lg transition-all duration-200 text-lg">
+          Browse Products
+        </a>
+      </div>
     </div>
   </div>
 </section>

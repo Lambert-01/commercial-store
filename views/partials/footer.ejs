@@ -1,91 +1,125 @@
     </div>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__container">
+  <footer class="bg-neutral-900 text-neutral-300 py-6 mt-auto">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <!-- Company Info -->
-        <div class="footer__section">
-          <h3 class="footer__section-title">Ecommerce Rwanda</h3>
-          <p style="color: var(--color-gray-400); line-height: 1.6;">
+        <div>
+          <h3 class="text-white text-lg font-semibold mb-4">Ecommerce Rwanda</h3>
+          <p class="text-neutral-400 leading-relaxed mb-4">
             Rwanda's premier multi-vendor marketplace connecting customers with local suppliers.
             Shop with confidence using MTN Mobile Money and Airtel Money.
           </p>
-          <div style="display: flex; gap: var(--space-4); margin-top: var(--space-4);">
-            <a href="#" aria-label="Facebook" style="color: var(--color-gray-400); font-size: var(--font-size-xl);">
+          <div class="flex gap-4">
+            <a href="#" aria-label="Facebook" class="text-neutral-400 hover:text-rwanda-yellow text-2xl transition-colors duration-200">
               📘
             </a>
-            <a href="#" aria-label="Twitter" style="color: var(--color-gray-400); font-size: var(--font-size-xl);">
+            <a href="#" aria-label="Twitter" class="text-neutral-400 hover:text-rwanda-yellow text-2xl transition-colors duration-200">
               🐦
             </a>
-            <a href="#" aria-label="Instagram" style="color: var(--color-gray-400); font-size: var(--font-size-xl);">
+            <a href="#" aria-label="Instagram" class="text-neutral-400 hover:text-rwanda-yellow text-2xl transition-colors duration-200">
               📷
             </a>
           </div>
         </div>
 
         <!-- Quick Links -->
-        <div class="footer__section">
-          <h3 class="footer__section-title">Quick Links</h3>
-          <ul class="footer__list">
-            <li class="footer__list-item">
-              <a href="/products" class="footer__link">All Products</a>
+        <div>
+          <h3 class="text-white text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="/products" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">All Products</a>
             </li>
-            <li class="footer__list-item">
-              <a href="/supplier/register" class="footer__link">Become a Supplier</a>
+            <li>
+              <a href="/supplier/register" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">Become a Supplier</a>
             </li>
-            <li class="footer__list-item">
-              <a href="/about" class="footer__link">About Us</a>
+            <li>
+              <a href="/about" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">About Us</a>
             </li>
-            <li class="footer__list-item">
-              <a href="/contact" class="footer__link">Contact</a>
+            <li>
+              <a href="/contact" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">Contact</a>
             </li>
           </ul>
         </div>
 
         <!-- Customer Service -->
-        <div class="footer__section">
-          <h3 class="footer__section-title">Customer Service</h3>
-          <ul class="footer__list">
-            <li class="footer__list-item">
-              <a href="/help" class="footer__link">Help Center</a>
+        <div>
+          <h3 class="text-white text-lg font-semibold mb-4">Customer Service</h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="/help" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">Help Center</a>
             </li>
-            <li class="footer__list-item">
-              <a href="/shipping" class="footer__link">Shipping Info</a>
+            <li>
+              <a href="/shipping" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">Shipping Info</a>
             </li>
-            <li class="footer__list-item">
-              <a href="/returns" class="footer__link">Returns & Refunds</a>
+            <li>
+              <a href="/returns" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">Returns & Refunds</a>
             </li>
-            <li class="footer__list-item">
-              <a href="/track" class="footer__link">Track Order</a>
+            <li>
+              <a href="/track" class="text-neutral-400 hover:text-rwanda-yellow transition-colors duration-200">Track Order</a>
             </li>
           </ul>
         </div>
 
         <!-- Payment Methods -->
-        <div class="footer__section">
-          <h3 class="footer__section-title">Payment Methods</h3>
-          <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
-            <div class="payment-method" style="padding: var(--space-2); background: var(--color-gray-800); border-radius: var(--radius-md); color: var(--color-white); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+        <div>
+          <h3 class="text-white text-lg font-semibold mb-4">Payment Methods</h3>
+          <div class="flex gap-3 flex-wrap mb-4">
+            <div class="bg-neutral-800 text-white px-3 py-2 rounded-lg text-sm font-medium">
               MTN MoMo
             </div>
-            <div class="payment-method" style="padding: var(--space-2); background: var(--color-error); border-radius: var(--radius-md); color: var(--color-white); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+            <div class="bg-error text-white px-3 py-2 rounded-lg text-sm font-medium">
               Airtel Money
             </div>
           </div>
-          <p style="color: var(--color-gray-400); font-size: var(--font-size-sm); margin-top: var(--space-3);">
+          <p class="text-neutral-400 text-sm">
             Secure payments powered by Rwanda's leading mobile money providers
           </p>
         </div>
       </div>
 
-      <div class="footer__bottom">
-        <p>&copy; <%= new Date().getFullYear() %> Ecommerce Rwanda. All rights reserved. | 🇷🇼 Made with ❤️ for Rwanda</p>
+      <div class="border-t border-neutral-700 pt-3 text-center">
+        <p class="text-neutral-500">
+          &copy; <%= new Date().getFullYear() %> Ecommerce Rwanda. All rights reserved. |
+          🇷🇼 Made with ❤️ for Rwanda
+        </p>
       </div>
     </div>
   </footer>
 
   <!-- Scripts -->
   <script src="/js/main.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 100,
+      delay: 0
+    });
+
+    // Mobile menu toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuToggle = document.querySelector('.nav__toggle');
+      const mobileMenu = document.querySelector('.header__nav');
+
+      if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+          mobileMenu.classList.toggle('flex');
+          mobileMenu.classList.toggle('flex-col');
+          mobileMenu.classList.toggle('absolute');
+          mobileMenu.classList.toggle('top-full');
+          mobileMenu.classList.toggle('left-0');
+          mobileMenu.classList.toggle('w-full');
+          mobileMenu.classList.toggle('bg-rwandan-green');
+          mobileMenu.classList.toggle('p-4');
+        });
+      }
+    });
+  </script>
 </body>
 </html>

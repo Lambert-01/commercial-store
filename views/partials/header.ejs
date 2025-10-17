@@ -24,72 +24,121 @@
   <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 
   <title><%= (typeof title !== 'undefined' && title) ? title : 'Ecommerce Rwanda - Multi-Vendor Marketplace' %></title>
-  <link rel="stylesheet" href="/css/style.css">
 
-  <!-- Preconnect to external domains for performance -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/tailwind.css">
+  <link rel="stylesheet" href="/css/admin.css">
+
+  <!-- Animation Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+  <!-- Meta Tags for SEO -->
+  <meta name="description" content="Ecommerce Rwanda - Premier multi-vendor marketplace connecting customers with local suppliers across Rwanda">
+  <meta name="keywords" content="Rwanda, ecommerce, marketplace, shopping, local suppliers, Kigali, MTN Mobile Money, Airtel Money">
+  <meta name="author" content="Ecommerce Rwanda">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ecommerce Rwanda - Multi-Vendor Marketplace">
+  <meta property="og:description" content="Discover amazing products from local Rwandan suppliers. Shop with confidence using MTN Mobile Money and Airtel Money.">
+  <meta property="og:url" content="https://ecommercerwanda.com">
+  <meta property="og:site_name" content="Ecommerce Rwanda">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Ecommerce Rwanda - Multi-Vendor Marketplace">
+  <meta property="twitter:description" content="Discover amazing products from local Rwandan suppliers">
 </head>
 <body>
-  <header class="header">
-    <div class="container">
-      <div class="header__container">
-        <a href="/" class="header__logo">
-          <div class="header__logo-icon">🇷🇼</div>
+  <header class="bg-primary text-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between py-4">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3 text-white hover:scale-105 transition-transform duration-200">
+          <div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-lg font-bold">
+            🇷🇼
+          </div>
           <div>
-            <h1 class="header__title">Ecommerce Rwanda</h1>
+            <h1 class="text-xl md:text-2xl font-bold">Ecommerce Rwanda</h1>
           </div>
         </a>
 
-        <nav class="header__nav" role="navigation" aria-label="Main navigation">
-          <ul class="nav__list">
-            <li class="nav__item">
-              <a href="/" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'home') ? 'nav__link--active' : '' %>">
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center" role="navigation" aria-label="Main navigation">
+          <ul class="flex items-center gap-6">
+            <li>
+              <a href="/"
+                 class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 <%= (typeof currentRoute !== 'undefined' && currentRoute === 'home') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' %>">
                 🏠 Home
               </a>
             </li>
-            <li class="nav__item">
-              <a href="/products" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'products') ? 'nav__link--active' : '' %>">
+            <li>
+              <a href="/products"
+                 class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 <%= (typeof currentRoute !== 'undefined' && currentRoute === 'products') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' %>">
                 🛍️ Products
               </a>
             </li>
-            <li class="nav__item">
-              <a href="/cart" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'cart') ? 'nav__link--active' : '' %>">
+            <li>
+              <a href="/cart"
+                 class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 <%= (typeof currentRoute !== 'undefined' && currentRoute === 'cart') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' %>">
                 🛒 Cart
                 <% if (typeof cartItemCount !== 'undefined' && cartItemCount > 0) { %>
-                  <span class="badge"><%= cartItemCount %></span>
+                  <span class="bg-secondary text-neutral-900 px-2 py-1 rounded-full text-xs font-bold animate-pulse">
+                    <%= cartItemCount %>
+                  </span>
                 <% } %>
               </a>
             </li>
             <% if (isAuthenticated) { %>
+              <li>
+                <a href="/orders/history"
+                   class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 <%= (typeof currentRoute !== 'undefined' && currentRoute === 'orders') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' %>">
+                  📋 Orders
+                </a>
+              </li>
               <% if (isSupplier) { %>
-                <li class="nav__item">
-                  <a href="/supplier/dashboard" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'supplier') ? 'nav__link--active' : '' %>">
+                <li>
+                  <a href="/supplier/dashboard"
+                     class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 <%= (typeof currentRoute !== 'undefined' && currentRoute === 'supplier') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' %>">
                     🏪 Dashboard
                   </a>
                 </li>
               <% } %>
               <% if (isAdmin) { %>
-                <li class="nav__item">
-                  <a href="/admin" class="nav__link <%= (typeof currentRoute !== 'undefined' && currentRoute === 'admin') ? 'nav__link--active' : '' %>">
+                <li>
+                  <a href="/admin"
+                     class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 <%= (typeof currentRoute !== 'undefined' && currentRoute === 'admin') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' %>">
                     ⚙️ Admin
                   </a>
                 </li>
               <% } %>
-              <li class="nav__item">
-                <a href="/logout" class="nav__link">
+              <li>
+                <a href="/logout"
+                   class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:bg-opacity-10">
                   🚪 Logout
                 </a>
               </li>
             <% } else { %>
-              <li class="nav__item">
-                <a href="/login" class="nav__link nav__link--primary">
+              <li>
+                <a href="/login"
+                   class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:bg-opacity-10">
                   🔑 Login
                 </a>
               </li>
-              <li class="nav__item">
-                <a href="/register" class="btn btn--primary">
+              <li>
+                <a href="/register"
+                   class="btn-rwanda text-sm px-4 py-2">
                   📝 Register
                 </a>
               </li>
@@ -98,12 +147,12 @@
         </nav>
 
         <!-- Mobile menu toggle -->
-        <button class="nav__toggle" aria-label="Toggle navigation menu">
+        <button class="nav__toggle md:hidden text-white text-2xl p-2" aria-label="Toggle navigation menu">
           ☰
         </button>
       </div>
     </div>
   </header>
 
-  <main class="main">
-    <div class="container">
+  <main class="min-h-screen bg-neutral-50">
+    <div class="container mx-auto px-4 py-8">

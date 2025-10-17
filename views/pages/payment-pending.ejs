@@ -1,0 +1,126 @@
+<%- include('../partials/header') %>
+
+<!-- Payment Pending Section -->
+<section style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: var(--space-16) 0;">
+  <div class="container">
+    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+      <!-- Loading Animation -->
+      <div style="width: 120px; height: 120px; background: var(--color-warning); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-8); font-size: var(--font-size-4xl); animation: pulse 2s infinite;">
+        ⏳
+      </div>
+
+      <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+        Payment Request Sent! 📱
+      </h1>
+
+      <p style="font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-8);">
+        We've sent a payment request to your Mobile Money number. Please check your phone and approve the payment.
+      </p>
+
+      <!-- Payment Info Card -->
+      <div class="card" style="padding: var(--space-8); margin-bottom: var(--space-8); text-align: left;">
+        <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-gray-900); text-align: center;">
+          💳 Payment Details
+        </h2>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: var(--font-size-lg); color: var(--color-gray-700);">
+            Order Number:
+          </span>
+          <span style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-primary);">
+            #<%= order._id.toString().slice(-8) %>
+          </span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: var(--font-size-lg); color: var(--color-gray-700);">
+            Amount:
+          </span>
+          <span style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-primary);">
+            <%= order.total %> RWF
+          </span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+          <span style="font-size: var(--font-size-lg); color: var(--color-gray-700);">
+            Payment Method:
+          </span>
+          <span style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-accent);">
+            📱 <%= paymentResult.provider %> Mobile Money
+          </span>
+        </div>
+
+        <div style="background: var(--color-warning-light); padding: var(--space-4); border-radius: var(--radius-md);">
+          <p style="font-size: var(--font-size-sm); color: var(--color-warning); margin: 0;">
+            📱 <strong>Next Steps:</strong><br>
+            1. Check your phone for the payment notification<br>
+            2. Enter your Mobile Money PIN to approve<br>
+            3. Wait for confirmation (usually instant)
+          </p>
+        </div>
+      </div>
+
+      <!-- What Happens Next -->
+      <div style="background: var(--color-gray-50); padding: var(--space-6); border-radius: var(--radius-lg); margin-bottom: var(--space-8);">
+        <h3 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
+          After Payment Approval 🚀
+        </h3>
+
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="font-size: var(--font-size-lg);">✅</span>
+          <span style="color: var(--color-gray-700);">Payment confirmation received</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="font-size: var(--font-size-lg);">📧</span>
+          <span style="color: var(--color-gray-700);">Order confirmation email sent</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <span style="font-size: var(--font-size-lg);">🏪</span>
+          <span style="color: var(--color-gray-700);">Suppliers notified to prepare your order</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <span style="font-size: var(--font-size-lg);">🚚</span>
+          <span style="color: var(--color-gray-700);">Delivery arranged to your address</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+        <a href="/orders/history" class="btn btn--primary">
+          📋 View My Orders
+        </a>
+        <button onclick="checkPaymentStatus('<%= order._id %>')" class="btn btn--outline">
+          🔄 Check Payment Status
+        </button>
+      </div>
+
+      <!-- Help Section -->
+      <div style="margin-top: var(--space-8); padding: var(--space-4); background: var(--color-gray-50); border-radius: var(--radius-md);">
+        <p style="font-size: var(--font-size-sm); color: var(--color-gray-600); margin: 0;">
+          ❓ <strong>Need help with payment?</strong><br>
+          Contact our support team:
+          <a href="tel:+250788123456" style="color: var(--color-primary); font-weight: var(--font-weight-medium);">
+            📞 +250 788 123 456
+          </a>
+          |
+          <a href="mailto:support@ecommercerwanda.com" style="color: var(--color-primary); font-weight: var(--font-weight-medium);">
+            📧 support@ecommercerwanda.com
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+</style>
+
+<%- include('../partials/footer') %>

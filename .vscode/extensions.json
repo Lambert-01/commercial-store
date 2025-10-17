@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-css-peek"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript",
+    "hookyqr.beautify"
+  ]
+}
