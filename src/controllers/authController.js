@@ -43,11 +43,19 @@ exports.postLogin = async (req, res) => {
       });
     }
 
-    // Check for demo login
-    if (password === 'demo123' && ['demo@customer.com', 'demo@supplier.com', 'demo@admin.com'].includes(email)) {
+    // Check for demo login (using actual seeded accounts)
+    const demoCredentials = {
+      'customer@customer.rw': { role: 'customer', name: 'Demo Customer' },
+      'supplier@kigalicoffee.rw': { role: 'supplier', name: 'Demo Coffee Supplier' },
+      'supplier@rwandanfashion.rw': { role: 'supplier', name: 'Demo Fashion Supplier' },
+      'supplier@localmarket.rw': { role: 'supplier', name: 'Demo Market Supplier' },
+      'admin@ecommerce.rw': { role: 'admin', name: 'Demo Admin' }
+    };
+
+    if (password === 'customer123' && demoCredentials[email]) {
       logger.info(`[${requestId}] 🎭 Demo login detected`, {
         email,
-        role: email.includes('customer') ? 'customer' : email.includes('supplier') ? 'supplier' : 'admin'
+        role: demoCredentials[email].role
       });
 
       // Create or find demo user
@@ -56,13 +64,20 @@ exports.postLogin = async (req, res) => {
       if (!user) {
         // Create demo user if doesn't exist
         const demoUserData = {
-          name: email.includes('customer') ? 'Demo Customer' :
-                email.includes('supplier') ? 'Demo Supplier' : 'Demo Admin',
+          name: demoCredentials[email].name,
           email,
-          password: 'demo123',
-          role: email.includes('customer') ? 'customer' :
-                email.includes('supplier') ? 'supplier' : 'admin'
+          password: password,
+          role: demoCredentials[email].role,
+          phone: '+250788000000',
+          verified: true
         };
+
+        // Add supplier-specific data
+        if (demoUserData.role === 'supplier') {
+          demoUserData.storeName = `${demoUserData.name} Store`;
+          demoUserData.storeDescription = 'Demo store for testing purposes';
+          demoUserData.businessCategory = 'other';
+        }
 
         user = new User(demoUserData);
         await user.save();
@@ -115,15 +130,30 @@ exports.postLogin = async (req, res) => {
 
     req.session.user = user;
 
+    // Role-based redirect after login
+    let redirectUrl = '/';
+    switch (user.role) {
+      case 'admin':
+        redirectUrl = '/admin-portal';
+        break;
+      case 'supplier':
+        redirectUrl = '/supplier/dashboard';
+        break;
+      case 'customer':
+      default:
+        redirectUrl = '/';
+        break;
+    }
+
     logger.info(`[${requestId}] ✅ Login successful`, {
       userId: user._id,
       userName: user.name,
       userRole: user.role,
-      redirectUrl: '/',
+      redirectUrl,
       loginTime: Date.now() - startTime + 'ms'
     });
 
-    res.redirect('/');
+    res.redirect(redirectUrl);
 
   } catch (error) {
     logger.error(`[${requestId}] 💥 Login error`, {
@@ -145,13 +175,124 @@ exports.getRegister = (req, res) => {
 };
 
 exports.postRegister = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const startTime = Date.now();
+  const requestId = Math.random().toString(36).substr(2, 9);
+
+  logger.info(`[${requestId}] 📝 POST /register - Registration attempt`, {
+    email: req.body.email,
+    role: req.body.role,
+    timestamp: new Date().toISOString()
+  });
+
   try {
-    const user = new User({ name, email, password, role });
+    const {
+      name, email, password, role,
+      phone, address, city, country,
+      nationality, dateOfBirth,
+      storeName, storeDescription, businessCategory, businessId
+    } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !password || !role) {
+      logger.warn(`[${requestId}] ⚠️ Missing required registration fields`, {
+        hasName: !!name,
+        hasEmail: !!email,
+        hasPassword: !!password,
+        hasRole: !!role
+      });
+      return res.render('pages/register', {
+        error: 'Please fill in all required fields',
+        requestId
+      });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      logger.warn(`[${requestId}] ⚠️ Email already exists`, {
+        email,
+        redirectUrl: '/register'
+      });
+      return res.render('pages/register', {
+        error: 'Email address is already registered',
+        requestId
+      });
+    }
+
+    // Prepare user data based on role
+    const userData = {
+      name,
+      email,
+      password,
+      role,
+      phone: phone || '',
+      address: address || '',
+      city: city || '',
+      country: country || 'Rwanda'
+    };
+
+    // Add customer-specific fields
+    if (role === 'customer') {
+      userData.nationality = nationality || '';
+      if (dateOfBirth) {
+        userData.dateOfBirth = new Date(dateOfBirth);
+      }
+    }
+
+    // Add supplier-specific fields
+    if (role === 'supplier') {
+      if (!storeName) {
+        return res.render('pages/register', {
+          error: 'Store name is required for suppliers',
+          requestId
+        });
+      }
+
+      userData.storeName = storeName;
+      userData.storeDescription = storeDescription || '';
+      userData.businessCategory = businessCategory || '';
+      userData.businessId = businessId || '';
+    }
+
+    // Create and save user
+    const user = new User(userData);
     await user.save();
-    res.redirect('/login');
+
+    logger.info(`[${requestId}] ✅ Registration successful`, {
+      userId: user._id,
+      userName: user.name,
+      userRole: user.role,
+      registrationTime: Date.now() - startTime + 'ms'
+    });
+
+    // Role-based redirect after registration
+    let redirectUrl = '/login';
+    let successMessage = 'Registration successful! Please login.';
+
+    if (role === 'supplier') {
+      redirectUrl = '/login';
+      successMessage = 'Supplier registration successful! Please login to access your dashboard.';
+    } else {
+      redirectUrl = '/login';
+      successMessage = 'Registration successful! Please login to access your dashboard.';
+    }
+
+    // Redirect to login with success message (you can implement flash messages)
+    res.redirect(`${redirectUrl}?success=${encodeURIComponent(successMessage)}`);
+
   } catch (error) {
-    res.render('pages/register', { error: 'Registration failed' });
+    logger.error(`[${requestId}] 💥 Registration error`, {
+      error: error.message,
+      stack: error.stack,
+      email: req.body?.email,
+      role: req.body?.role,
+      processingTime: Date.now() - startTime + 'ms'
+    });
+
+    res.render('pages/register', {
+      error: 'Registration failed. Please try again.',
+      requestId
+    });
   }
 };
 

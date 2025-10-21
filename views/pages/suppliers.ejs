@@ -1,0 +1,169 @@
+<%- include('../partials/header') %>
+
+<!-- Suppliers Directory Section with Rwandan Design System -->
+<section class="py-12 bg-neutral-50 min-h-screen" data-aos="fade-up">
+  <div class="container mx-auto px-4">
+    <!-- Page Header -->
+    <div class="mb-8" data-aos="fade-up" data-aos-delay="100">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-4 flex items-center justify-center gap-3">
+          <span class="text-4xl">🏪</span>
+          Rwandan Suppliers
+        </h1>
+        <p class="text-neutral-600 text-lg max-w-2xl mx-auto">
+          Discover trusted local suppliers offering authentic Rwandan products
+        </p>
+      </div>
+    </div>
+
+    <!-- Request ID for debugging -->
+    <% if (typeof requestId !== 'undefined') { %>
+      <div class="bg-primary bg-opacity-10 border border-primary border-opacity-20 rounded-lg p-3 mb-6">
+        <p class="text-primary text-sm font-medium">Request ID: <%= requestId %></p>
+      </div>
+    <% } %>
+
+    <% if (suppliers && suppliers.length > 0) { %>
+      <!-- Suppliers Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% suppliers.forEach((supplier, index) => { %>
+          <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-neutral-200 overflow-hidden animate__animated animate__fadeInUp"
+               data-aos="fade-up"
+               data-aos-delay="<%= 200 + (index * 100) %>"
+               style="animation-delay: <%= index * 0.1 %>s;">
+
+            <!-- Supplier Header -->
+            <div class="relative h-32 bg-gradient-to-br from-primary to-primary-600 flex items-center justify-center">
+              <div class="text-5xl text-white">🏪</div>
+              <!-- Verification Badge -->
+              <div class="absolute top-3 right-3 bg-success text-white px-2 py-1 rounded-full text-xs font-bold">
+                ✓ Verified
+              </div>
+            </div>
+
+            <!-- Supplier Info -->
+            <div class="p-6">
+              <div class="mb-4">
+                <h3 class="text-lg font-bold text-neutral-900 mb-2 line-clamp-2">
+                  <%= supplier.name %>
+                </h3>
+                <p class="text-neutral-600 text-sm mb-3">
+                  <%= supplier.description || 'Trusted Rwandan supplier offering quality products' %>
+                </p>
+
+                <!-- Contact Info -->
+                <div class="flex items-center gap-2 text-sm text-neutral-500 mb-3">
+                  <span class="flex items-center gap-1">
+                    <span>📧</span>
+                    <%= supplier.email %>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Stats -->
+              <div class="grid grid-cols-2 gap-4 mb-4 p-3 bg-neutral-50 rounded-lg">
+                <div class="text-center">
+                  <div class="text-lg font-bold text-primary">
+                    <%= supplier.productCount || 0 %>
+                  </div>
+                  <div class="text-xs text-neutral-600">Products</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-lg font-bold text-rwanda-yellow">
+                    <%= supplier.rating || '4.8' %>
+                  </div>
+                  <div class="text-xs text-neutral-600">Rating</div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex gap-2">
+                <a href="/products/supplier/<%= supplier._id %>"
+                   class="flex-1 bg-primary hover:bg-primary-600 text-white text-center py-2 px-4 rounded-lg transition-colors duration-200 text-sm font-medium">
+                  View Store
+                </a>
+
+                <button onclick="contactSupplier('<%= supplier._id %>')"
+                        class="btn-rwanda-secondary py-2 px-3 rounded-lg text-sm"
+                        title="Contact supplier">
+                  💬
+                </button>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <!-- Suppliers Summary -->
+      <div class="mt-12 bg-white rounded-xl shadow-lg p-6" data-aos="fade-up" data-aos-delay="800">
+        <div class="text-center">
+          <h3 class="text-xl font-bold text-neutral-900 mb-2">
+            <%= suppliers.length %> Trusted Rwandan Suppliers
+          </h3>
+          <p class="text-neutral-600">
+            Supporting local businesses and entrepreneurs across Rwanda
+          </p>
+        </div>
+      </div>
+
+    <% } else { %>
+      <!-- Empty State -->
+      <div class="text-center py-16" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-32 h-32 bg-neutral-200 rounded-full flex items-center justify-center text-6xl mx-auto mb-6 animate-bounce">
+          🏪
+        </div>
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-4">
+          No Suppliers Available
+        </h2>
+        <p class="text-neutral-600 text-lg mb-8 max-w-md mx-auto">
+          We're working with local suppliers to bring you amazing Rwandan products. Check back soon!
+        </p>
+
+        <% if (isSupplier) { %>
+          <div class="bg-primary bg-opacity-10 border border-primary border-opacity-20 rounded-lg p-6 inline-block mb-6">
+            <h3 class="font-semibold text-primary mb-2">Are you a supplier?</h3>
+            <p class="text-neutral-600 text-sm mb-4">Join our marketplace and start selling</p>
+            <a href="/supplier/dashboard"
+               class="btn-rwanda text-center">
+              🏪 Join as Supplier
+            </a>
+          </div>
+        <% } %>
+
+        <% if (isAdmin) { %>
+          <div class="bg-warning bg-opacity-10 border border-warning border-opacity-20 rounded-lg p-6 inline-block">
+            <h3 class="font-semibold text-warning-800 mb-2">Admin Action Required</h3>
+            <p class="text-neutral-600 text-sm mb-4">Supplier verification needed</p>
+            <a href="/admin/suppliers"
+               class="bg-warning hover:bg-yellow-500 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+               Manage Suppliers
+            </a>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+
+    <!-- Call to Action -->
+    <div class="mt-16 bg-gradient-to-r from-primary to-primary-600 rounded-xl p-8 text-white text-center" data-aos="fade-up" data-aos-delay="900">
+      <h3 class="text-2xl font-bold mb-4">
+        Want to Become a Supplier?
+      </h3>
+      <p class="text-white text-opacity-90 mb-6">
+        Join Rwanda's premier marketplace and reach customers across the country
+      </p>
+      <a href="/register?role=supplier"
+         class="bg-white text-primary hover:bg-neutral-100 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+        🏪 Register as Supplier
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+function contactSupplier(supplierId) {
+  // Placeholder for supplier contact functionality
+  alert('Supplier contact feature coming soon!');
+}
+</script>
+
+<%- include('../partials/footer') %>

@@ -49,10 +49,24 @@
                         <span class="font-medium">Unit Price:</span>
                         <span class="font-bold text-primary"><%= item.product?.price || 0 %> RWF</span>
                       </span>
-                      <span class="flex items-center gap-1">
+                      <div class="flex items-center gap-2">
                         <span class="font-medium">Quantity:</span>
-                        <span class="font-bold text-secondary"><%= item.quantity %></span>
-                      </span>
+                        <div class="flex items-center gap-2">
+                          <button class="quantity-btn w-8 h-8 bg-neutral-200 hover:bg-neutral-300 rounded-full flex items-center justify-center text-sm font-bold"
+                                  data-product-id="<%= item.product && item.product._id ? item.product._id : '' %>"
+                                  data-action="decrease"
+                                  <%= item.quantity <= 1 ? 'disabled' : '' %>>
+                            −
+                          </button>
+                          <span class="font-bold text-secondary min-w-[2rem] text-center"><%= item.quantity %></span>
+                          <button class="quantity-btn w-8 h-8 bg-neutral-200 hover:bg-neutral-300 rounded-full flex items-center justify-center text-sm font-bold"
+                                  data-product-id="<%= item.product && item.product._id ? item.product._id : '' %>"
+                                  data-action="increase"
+                                  <%= item.quantity >= (item.product && item.product.stock ? item.product.stock : 0) ? 'disabled' : '' %>>
+                            +
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -117,10 +131,17 @@
              class="btn-rwanda-secondary text-center py-3 px-6">
             🛍️ Continue Shopping
           </a>
-          <a href="/checkout"
-             class="btn-rwanda text-center py-3 px-6">
-            💳 Proceed to Checkout
-          </a>
+          <% if (isAuthenticated) { %>
+            <a href="/checkout"
+               class="btn-rwanda text-center py-3 px-6">
+              💳 Proceed to Checkout
+            </a>
+          <% } else { %>
+            <a href="/login?redirect=/checkout"
+               class="btn-rwanda text-center py-3 px-6">
+              🔑 Login to Checkout
+            </a>
+          <% } %>
         </div>
       </div>
 
@@ -158,5 +179,123 @@
 
   </div>
 </section>
+
+<!-- Cart JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle quantity update buttons
+  const quantityButtons = document.querySelectorAll('.quantity-btn');
+
+  quantityButtons.forEach(button => {
+    button.addEventListener('click', async function() {
+      const productId = this.getAttribute('data-product-id');
+      const action = this.getAttribute('data-action');
+
+      if (!productId) return;
+
+      try {
+        // Disable button temporarily
+        this.disabled = true;
+
+        // Find current quantity span
+        const quantitySpan = this.parentNode.querySelector('.quantity-btn + span, span + .quantity-btn').previousElementSibling || this.parentNode.querySelector('.quantity-btn + span, span + .quantity-btn').nextElementSibling;
+        const currentQuantity = parseInt(quantitySpan.textContent);
+
+        // Calculate new quantity
+        let newQuantity = currentQuantity;
+        if (action === 'increase') {
+          newQuantity = currentQuantity + 1;
+        } else if (action === 'decrease') {
+          newQuantity = currentQuantity - 1;
+        }
+
+        // Update quantity via API
+        const response = await fetch('/cart/update-quantity', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productId: productId,
+            quantity: newQuantity
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Update the quantity display
+          quantitySpan.textContent = newQuantity;
+
+          // Update the total price for this item
+          const itemContainer = this.closest('.hover\\:bg-neutral-50');
+          const priceElement = itemContainer.querySelector('.text-2xl.font-bold.text-primary');
+          if (priceElement) {
+            priceElement.textContent = (result.itemTotal || 0).toLocaleString() + ' RWF';
+          }
+
+          // Update cart total if available
+          const cartTotalElement = document.querySelector('.text-primary.text-xl.font-bold');
+          if (cartTotalElement) {
+            cartTotalElement.textContent = result.total.toLocaleString() + ' RWF';
+          }
+
+          // Update button states
+          updateButtonStates();
+
+          // Show success message
+          showToast('Quantity updated successfully', 'success');
+        } else {
+          showToast(result.message || 'Failed to update quantity', 'error');
+        }
+      } catch (error) {
+        console.error('Quantity update error:', error);
+        showToast('Failed to update quantity', 'error');
+      } finally {
+        // Re-enable button
+        this.disabled = false;
+      }
+    });
+  });
+
+  function updateButtonStates() {
+    const cartItems = document.querySelectorAll('.hover\\:bg-neutral-50');
+    cartItems.forEach(item => {
+      const decreaseBtn = item.querySelector('[data-action="decrease"]');
+      const increaseBtn = item.querySelector('[data-action="increase"]');
+      const quantitySpan = item.querySelector('.font-bold.text-secondary');
+      const currentQuantity = parseInt(quantitySpan.textContent);
+
+      if (decreaseBtn) {
+        decreaseBtn.disabled = currentQuantity <= 1;
+      }
+
+      if (increaseBtn) {
+        // We need to check stock - for now, assume max 10
+        increaseBtn.disabled = currentQuantity >= 10;
+      }
+    });
+  }
+
+  function showToast(message, type = 'info') {
+    // Simple toast notification
+    const toast = document.createElement('div');
+    toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 ${
+      type === 'success' ? 'bg-success' :
+      type === 'error' ? 'bg-error' : 'bg-primary'
+    }`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  // Initialize button states
+  updateButtonStates();
+});
+</script>
 
 <%- include('../partials/footer') %>

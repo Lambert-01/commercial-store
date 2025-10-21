@@ -2,6 +2,28 @@ const Product = require('../models/Product');
 const User = require('../models/User');
 const logger = require('../utils/logger');
 
+// Helper functions for EJS templates
+const getProductCategory = (productName) => {
+  const name = productName.toLowerCase();
+  if (name.includes('coffee') || name.includes('tea')) return 'coffee';
+  if (name.includes('dress') || name.includes('shirt') || name.includes('necklace')) return 'fashion';
+  if (name.includes('banana') || name.includes('honey') || name.includes('food')) return 'food';
+  return 'crafts';
+};
+
+const getProductIcon = (productName) => {
+  const name = productName.toLowerCase();
+  if (name.includes('coffee')) return '☕';
+  if (name.includes('tea')) return '🍵';
+  if (name.includes('dress')) return '👗';
+  if (name.includes('shirt')) return '👔';
+  if (name.includes('necklace')) return '📿';
+  if (name.includes('banana')) return '🍌';
+  if (name.includes('honey')) return '🍯';
+  if (name.includes('basket')) return '🧺';
+  return '📦';
+};
+
 exports.getAllProducts = async (req, res) => {
   const startTime = Date.now();
   const requestId = Math.random().toString(36).substr(2, 9);
@@ -18,16 +40,45 @@ exports.getAllProducts = async (req, res) => {
       .populate('supplier', 'name email')
       .sort({ createdAt: -1 });
 
+    // Get categories from database with product counts
+    const categoriesData = await Product.aggregate([
+      { $match: { approved: true } },
+      { $group: { _id: '$category', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+
+    // Define category metadata
+    const categoryMetadata = {
+      coffee: { name: 'Coffee & Tea', icon: '☕', color: 'bg-amber-100 text-amber-800' },
+      fashion: { name: 'Fashion & Clothing', icon: '👗', color: 'bg-pink-100 text-pink-800' },
+      food: { name: 'Food & Produce', icon: '🥕', color: 'bg-green-100 text-green-800' },
+      crafts: { name: 'Crafts & Art', icon: '🧺', color: 'bg-purple-100 text-purple-800' },
+      other: { name: 'Other Products', icon: '📦', color: 'bg-neutral-100 text-neutral-800' }
+    };
+
+    // Format categories for template
+    const categories = categoriesData.map(cat => ({
+      id: cat._id,
+      name: categoryMetadata[cat._id]?.name || cat._id,
+      icon: categoryMetadata[cat._id]?.icon || '📦',
+      color: categoryMetadata[cat._id]?.color || 'bg-neutral-100 text-neutral-800',
+      count: cat.count
+    }));
+
     logger.info(`[${requestId}] ✅ Products loaded from database`, {
       productCount: products.length,
+      categoryCount: categories.length,
       renderTime: Date.now() - startTime + 'ms'
     });
 
     res.render('pages/products', {
       products,
+      categories,
       requestId,
       title: 'Products - Ecommerce Rwanda',
-      currentRoute: 'products'
+      currentRoute: 'products',
+      getProductCategory,
+      getProductIcon
     });
 
   } catch (error) {
@@ -175,7 +226,9 @@ exports.getSupplierStore = async (req, res) => {
       products,
       requestId,
       title: `${supplier.name} - Supplier Store - Ecommerce Rwanda`,
-      currentRoute: 'products'
+      currentRoute: 'products',
+      getProductCategory,
+      getProductIcon
     });
 
   } catch (error) {

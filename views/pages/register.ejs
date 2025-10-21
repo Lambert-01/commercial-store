@@ -1,90 +1,363 @@
 <%- include('../partials/header') %>
 
-<!-- Register Section with Tailwind -->
-<section class="min-h-screen flex items-center justify-center py-16 bg-gradient-to-br from-neutral-50 to-neutral-100">
+<!-- Register Section with Starry Night Theme -->
+<section class="min-h-screen flex items-center justify-center py-16 starry-bg">
   <div class="container mx-auto px-4">
     <div class="max-w-2xl mx-auto">
-      <!-- Register Card -->
-      <div class="bg-white rounded-2xl shadow-2xl p-8 animate__animated animate__fadeInUp"
+      <!-- Glassmorphism Register Card -->
+      <div class="glass-card rounded-2xl p-8 animate__animated animate__fadeInUp"
            data-aos="zoom-in">
 
         <!-- Header -->
         <div class="text-center mb-8">
-          <div class="w-20 h-20 bg-rwanda-gradient-yellow mx-auto mb-4 rounded-full flex items-center justify-center text-3xl animate-bounce">
+          <div class="w-20 h-20 bg-gradient-to-br from-secondary to-yellow-500 mx-auto mb-4 rounded-full flex items-center justify-center text-3xl animate-bounce shadow-lg">
             📝
           </div>
-          <h1 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">
+          <h1 class="text-3xl md:text-4xl font-bold gradient-text-rainbow mb-2 text-glow-secondary">
             Join Ecommerce Rwanda
           </h1>
-          <p class="text-neutral-600">
+          <p class="text-slate-300">
             Create your account and start your journey with us
           </p>
         </div>
 
         <!-- Error Message -->
         <% if (typeof error !== 'undefined' && error) { %>
-          <div class="bg-error-50 border border-error-200 text-error-700 p-4 rounded-lg mb-6 text-sm animate__animated animate__shake"
+          <div class="bg-red-500/20 border border-red-400/30 text-red-300 p-4 rounded-lg mb-6 text-sm animate__animated animate__shake glass-panel"
                data-aos="shake">
             ⚠️ <%= error %>
           </div>
         <% } %>
 
-        <!-- Register Form -->
-        <form action="/register" method="POST" class="space-y-6">
-          <div>
-            <label for="name" class="form-label-rwanda">Full Name</label>
-            <input type="text"
-                   id="name"
-                   name="name"
-                   placeholder="Enter your full name"
-                   class="form-input-rwanda"
-                   required>
+        <!-- Role Selection Tabs -->
+        <div class="mb-8">
+          <div class="flex glass-panel rounded-lg p-1 mb-6">
+            <button type="button"
+                    id="clientTab"
+                    class="flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-200 client-tab active bg-white/10 text-white"
+                    data-tab="client">
+              <span class="mr-2">👤</span>
+              I'm a Customer
+            </button>
+            <button type="button"
+                    id="supplierTab"
+                    class="flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-200 supplier-tab text-slate-300 hover:text-white hover:bg-white/5"
+                    data-tab="supplier">
+              <span class="mr-2">🏪</span>
+              I'm a Supplier
+            </button>
           </div>
 
-          <div>
-            <label for="email" class="form-label-rwanda">Email Address</label>
-            <input type="email"
-                   id="email"
-                   name="email"
-                   placeholder="Enter your email address"
-                   class="form-input-rwanda"
-                   required>
+          <!-- Client Registration Form -->
+          <div id="clientForm" class="registration-form">
+            <h3 class="text-xl font-semibold gradient-text-primary mb-4 flex items-center gap-2">
+              <span>👤</span>
+              Customer Registration
+            </h3>
+
+            <form action="/register" method="POST" class="space-y-6">
+              <input type="hidden" name="role" value="customer">
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="clientName" class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
+                  <input type="text"
+                         id="clientName"
+                         name="name"
+                         placeholder="Enter your full name"
+                         class="form-input-rwanda w-full bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 focus:border-primary"
+                         required>
+                </div>
+
+                <div>
+                  <label for="clientEmail" class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                  <input type="email"
+                         id="clientEmail"
+                         name="email"
+                         placeholder="Enter your email address"
+                         class="form-input-rwanda w-full bg-slate-800/50 border-slate-600 text-white placeholder-slate-400 focus:border-primary"
+                         required>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="clientPassword" class="form-label-rwanda">Password</label>
+                  <input type="password"
+                         id="clientPassword"
+                         name="password"
+                         placeholder="Create a strong password"
+                         class="form-input-rwanda"
+                         required
+                         minlength="6">
+                </div>
+
+                <div>
+                  <label for="clientPhone" class="form-label-rwanda">Phone Number (Optional)</label>
+                  <input type="tel"
+                         id="clientPhone"
+                         name="phone"
+                         placeholder="+250 788 123 456"
+                         class="form-input-rwanda"
+                         pattern="^(\+250|0)[7-9][0-9]{8}$">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="clientNationality" class="form-label-rwanda">Nationality</label>
+                  <select id="clientNationality" name="nationality" class="form-input-rwanda">
+                    <option value="">Select Nationality</option>
+                    <option value="rwandan" selected>Rwandan</option>
+                    <option value="kenyan">Kenyan</option>
+                    <option value="ugandan">Ugandan</option>
+                    <option value="tanzanian">Tanzanian</option>
+                    <option value="burundian">Burundian</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="clientDOB" class="form-label-rwanda">Date of Birth (Optional)</label>
+                  <input type="date"
+                         id="clientDOB"
+                         name="dateOfBirth"
+                         class="form-input-rwanda">
+                </div>
+              </div>
+
+              <button type="submit"
+                      class="btn-neon w-full text-lg py-3">
+                🛒 Create Customer Account
+              </button>
+            </form>
           </div>
 
-          <div>
-            <label for="password" class="form-label-rwanda">Password</label>
-            <input type="password"
-                   id="password"
-                   name="password"
-                   placeholder="Create a strong password"
-                   class="form-input-rwanda"
-                   required
-                   minlength="6">
-          </div>
+          <!-- Supplier Registration Form -->
+          <div id="supplierForm" class="registration-form hidden">
+            <h3 class="text-xl font-semibold text-neutral-900 mb-4 flex items-center gap-2">
+              <span>🏪</span>
+              Supplier Registration
+            </h3>
 
-          <div>
-            <label for="role" class="form-label-rwanda">Account Type</label>
-            <select id="role"
-                    name="role"
-                    class="form-input-rwanda"
-                    required>
-              <option value="customer">🛒 Customer - Shop and buy products</option>
-              <option value="supplier">🏪 Supplier - Sell your products</option>
-            </select>
-          </div>
+            <form action="/register" method="POST" class="space-y-6">
+              <input type="hidden" name="role" value="supplier">
 
-          <button type="submit"
-                  class="btn-rwanda w-full text-lg py-3 animate-glow">
-            📝 Create Account
-          </button>
+              <!-- Personal Information -->
+              <div class="bg-primary bg-opacity-5 p-4 rounded-lg mb-6">
+                <h4 class="font-semibold text-primary mb-3">👤 Personal Information</h4>
 
-          <div class="text-center">
-            <a href="/login"
-               class="text-rwanda-yellow hover:text-yellow-600 font-medium transition-colors duration-200">
-              Already have an account? Sign in here
-            </a>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="supplierName" class="form-label-rwanda">Full Name</label>
+                    <input type="text"
+                           id="supplierName"
+                           name="name"
+                           placeholder="Enter your full name"
+                           class="form-input-rwanda"
+                           required>
+                  </div>
+
+                  <div>
+                    <label for="supplierEmail" class="form-label-rwanda">Email Address</label>
+                    <input type="email"
+                           id="supplierEmail"
+                           name="email"
+                           placeholder="Enter your business email"
+                           class="form-input-rwanda"
+                           required>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                  <div>
+                    <label for="supplierPassword" class="form-label-rwanda">Password</label>
+                    <input type="password"
+                           id="supplierPassword"
+                           name="password"
+                           placeholder="Create a strong password"
+                           class="form-input-rwanda"
+                           required
+                           minlength="6">
+                  </div>
+
+                  <div>
+                    <label for="supplierPhone" class="form-label-rwanda">Business Phone</label>
+                    <input type="tel"
+                           id="supplierPhone"
+                           name="phone"
+                           placeholder="+250 788 123 456"
+                           class="form-input-rwanda"
+                           pattern="^(\+250|0)[7-9][0-9]{8}$"
+                           required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Business Information -->
+              <div class="bg-secondary bg-opacity-5 p-4 rounded-lg mb-6">
+                <h4 class="font-semibold text-secondary-600 mb-3">🏢 Business Information</h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="storeName" class="form-label-rwanda">Store Name</label>
+                    <input type="text"
+                           id="storeName"
+                           name="storeName"
+                           placeholder="Your store/business name"
+                           class="form-input-rwanda"
+                           required>
+                  </div>
+
+                  <div>
+                    <label for="businessCategory" class="form-label-rwanda">Business Category</label>
+                    <select id="businessCategory" name="businessCategory" class="form-input-rwanda" required>
+                      <option value="">Select Category</option>
+                      <option value="food-beverage">🍽️ Food & Beverage</option>
+                      <option value="fashion-clothing">👕 Fashion & Clothing</option>
+                      <option value="agriculture">🌾 Agriculture</option>
+                      <option value="handicrafts">🛍️ Handicrafts & Art</option>
+                      <option value="electronics">📱 Electronics</option>
+                      <option value="home-garden">🏠 Home & Garden</option>
+                      <option value="beauty-health">💄 Beauty & Health</option>
+                      <option value="books-media">📚 Books & Media</option>
+                      <option value="other">📦 Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <label for="storeDescription" class="form-label-rwanda">Store Description</label>
+                  <textarea id="storeDescription"
+                            name="storeDescription"
+                            rows="3"
+                            placeholder="Describe your business and what you sell..."
+                            class="form-input-rwanda"
+                            required></textarea>
+                </div>
+
+                <div class="mt-4">
+                  <label for="businessId" class="form-label-rwanda">Business ID/TIN (Optional)</label>
+                  <input type="text"
+                         id="businessId"
+                         name="businessId"
+                         placeholder="Business registration number"
+                         class="form-input-rwanda">
+                </div>
+              </div>
+
+              <button type="submit"
+                      class="btn-rwanda w-full text-lg py-3 animate-glow">
+                🏪 Create Supplier Account
+              </button>
+            </form>
           </div>
-        </form>
+        </div>
+
+        <div class="text-center">
+          <a href="/login"
+             class="gradient-text-secondary hover:scale-105 font-medium transition-all duration-200 inline-block">
+            Already have an account? Sign in here
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Registration Tab Switcher JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+ const clientTab = document.getElementById('clientTab');
+ const supplierTab = document.getElementById('supplierTab');
+ const clientForm = document.getElementById('clientForm');
+ const supplierForm = document.getElementById('supplierForm');
+
+ // Tab switching functionality
+ clientTab.addEventListener('click', function() {
+   switchToTab('client');
+ });
+
+ supplierTab.addEventListener('click', function() {
+   switchToTab('supplier');
+ });
+
+ function switchToTab(role) {
+   if (role === 'client') {
+     // Update tab styles
+     clientTab.classList.add('active', 'bg-white', 'text-primary', 'shadow-sm');
+     clientTab.classList.remove('text-neutral-600');
+     supplierTab.classList.remove('active', 'bg-white', 'text-primary', 'shadow-sm');
+     supplierTab.classList.add('text-neutral-600');
+
+     // Show/hide forms
+     clientForm.classList.remove('hidden');
+     supplierForm.classList.add('hidden');
+   } else {
+     // Update tab styles
+     supplierTab.classList.add('active', 'bg-white', 'text-primary', 'shadow-sm');
+     supplierTab.classList.remove('text-neutral-600');
+     clientTab.classList.remove('active', 'bg-white', 'text-primary', 'shadow-sm');
+     clientTab.classList.add('text-neutral-600');
+
+     // Show/hide forms
+     supplierForm.classList.remove('hidden');
+     clientForm.classList.add('hidden');
+   }
+ }
+
+ // Form validation
+ const forms = document.querySelectorAll('.registration-form form');
+
+ forms.forEach(form => {
+   form.addEventListener('submit', function(e) {
+     const requiredFields = form.querySelectorAll('[required]');
+     let isValid = true;
+
+     requiredFields.forEach(field => {
+       if (!field.value.trim()) {
+         isValid = false;
+         field.classList.add('border-error');
+
+         // Remove error class on input
+         field.addEventListener('input', function() {
+           this.classList.remove('border-error');
+         }, { once: true });
+       }
+     });
+
+     if (!isValid) {
+       e.preventDefault();
+       showToast('Please fill in all required fields', 'error');
+     }
+   });
+ });
+
+ function showToast(message, type = 'info') {
+   const toast = document.createElement('div');
+   toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 transition-all duration-300 transform translate-x-full`;
+   toast.style.backgroundColor = type === 'error' ? '#ef4444' : '#00a86b';
+   toast.textContent = message;
+
+   document.body.appendChild(toast);
+
+   // Animate in
+   setTimeout(() => {
+     toast.style.transform = 'translateX(0)';
+   }, 100);
+
+   // Remove after 3 seconds
+   setTimeout(() => {
+     toast.style.transform = 'translateX(full)';
+     setTimeout(() => {
+       toast.remove();
+     }, 300);
+   }, 3000);
+ }
+});
+</script>
+
+<%- include('../partials/footer') %>
 
         <!-- Account Type Benefits -->
         <div class="mt-8 p-6 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-lg border border-neutral-200">

@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   stock: { type: Number, required: true },
   image: { type: String },
+  category: { type: String, required: true, enum: ['coffee', 'fashion', 'food', 'crafts', 'other'] },
   supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   approved: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },

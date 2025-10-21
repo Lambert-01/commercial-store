@@ -1,40 +1,79 @@
 <%- include('../partials/header') %>
 
-<!-- Checkout Section -->
-<section style="min-height: calc(100vh - 200px); padding: var(--space-16) 0;">
-  <div class="container">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <!-- Checkout Header -->
-      <div style="text-align: center; margin-bottom: var(--space-12);">
-        <h1 style="font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--color-gray-900); margin-bottom: var(--space-4);">
+<!-- Enhanced Checkout Section with 3-Step Process -->
+<section class="min-h-screen bg-neutral-50 py-8">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+
+      <!-- Checkout Header - Optimized -->
+      <div class="text-center mb-8">
+        <h1 class="text-2xl md:text-3xl font-semibold text-neutral-900 mb-2">
           🛒 Checkout
         </h1>
-        <p style="font-size: var(--font-size-lg); color: var(--color-gray-600);">
+        <p class="text-neutral-600 text-sm">
           Complete your order with secure Mobile Money payment
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8);">
-        <!-- Order Summary -->
-        <div class="card" style="padding: var(--space-8);">
-          <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-gray-900);">
-            📦 Order Summary
+      <!-- 3-Step Progress Indicator -->
+      <div class="bg-white rounded-xl shadow-sm p-4 mb-6 border border-neutral-200">
+        <div class="flex items-center justify-center">
+          <div class="flex items-center space-x-4">
+            <!-- Step 1: Cart Review -->
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                1
+              </div>
+              <span class="ml-2 text-sm font-medium text-primary">Cart Review</span>
+            </div>
+
+            <!-- Connector Line -->
+            <div class="w-8 h-px bg-neutral-300"></div>
+
+            <!-- Step 2: Shipping & Details -->
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-neutral-300 text-neutral-600 rounded-full flex items-center justify-center text-sm font-semibold">
+                2
+              </div>
+              <span class="ml-2 text-sm font-medium text-neutral-600">Shipping & Details</span>
+            </div>
+
+            <!-- Connector Line -->
+            <div class="w-8 h-px bg-neutral-300"></div>
+
+            <!-- Step 3: Payment Confirmation -->
+            <div class="flex items-center">
+              <div class="w-8 h-8 bg-neutral-300 text-neutral-600 rounded-full flex items-center justify-center text-sm font-semibold">
+                3
+              </div>
+              <span class="ml-2 text-sm font-medium text-neutral-600">Payment Confirmation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Order Summary - Optimized -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+          <h2 class="text-lg font-semibold text-neutral-900 mb-4 flex items-center gap-2">
+            <span class="text-xl">📦</span>
+            Order Summary
           </h2>
 
           <% if (cart && cart.items.length > 0) { %>
-            <div style="margin-bottom: var(--space-6);">
+            <div class="space-y-3 mb-4">
               <% cart.items.forEach(item => { %>
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-4); border-bottom: 1px solid var(--color-gray-200);">
-                  <div>
-                    <h4 style="font-size: var(--font-size-base); font-weight: var(--font-weight-medium); color: var(--color-gray-900); margin-bottom: var(--space-1);">
+                <div class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg">
+                  <div class="flex-1">
+                    <h4 class="text-sm font-medium text-neutral-900 line-clamp-1">
                       <%= item.product.name %>
                     </h4>
-                    <p style="font-size: var(--font-size-sm); color: var(--color-gray-600);">
-                      Quantity: <%= item.quantity %>
+                    <p class="text-xs text-neutral-600">
+                      Qty: <%= item.quantity %>
                     </p>
                   </div>
-                  <div style="text-align: right;">
-                    <p style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-primary);">
+                  <div class="text-right">
+                    <p class="text-sm font-semibold text-primary">
                       <%= item.product.price * item.quantity %> RWF
                     </p>
                   </div>
@@ -42,149 +81,152 @@
               <% }); %>
             </div>
 
-            <div style="border-top: 2px solid var(--color-gray-200); padding-top: var(--space-4);">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-gray-900);">
+            <div class="border-t border-neutral-200 pt-4">
+              <div class="flex items-center justify-between">
+                <span class="text-base font-semibold text-neutral-900">
                   Total:
                 </span>
-                <span style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-primary);">
+                <span class="text-xl font-bold text-rwanda-yellow">
                   <%= cart.total %> RWF
                 </span>
               </div>
             </div>
           <% } else { %>
-            <p style="text-align: center; color: var(--color-gray-600); padding: var(--space-8);">
-              Your cart is empty. <a href="/products" style="color: var(--color-primary);">Continue shopping</a>
-            </p>
+            <div class="text-center py-8">
+              <p class="text-neutral-600 mb-4">Your cart is empty.</p>
+              <a href="/products" class="btn-rwanda text-sm px-4 py-2">
+                Continue Shopping
+              </a>
+            </div>
           <% } %>
         </div>
 
-        <!-- Checkout Form -->
-        <div class="card" style="padding: var(--space-8);">
-          <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-6); color: var(--color-gray-900);">
-            📋 Complete Your Order
+        <!-- Checkout Form - Optimized -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+          <h2 class="text-lg font-semibold text-neutral-900 mb-4 flex items-center gap-2">
+            <span class="text-xl">📋</span>
+            Complete Your Order
           </h2>
 
           <% if (typeof error !== 'undefined' && error) { %>
-            <div style="background: var(--color-error-light); border: 1px solid var(--color-error); color: var(--color-error); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+            <div class="bg-error-50 border border-error-200 text-error-700 px-3 py-2 rounded-lg mb-4 text-sm">
               ⚠️ <%= error %>
             </div>
           <% } %>
 
-          <form action="/orders/process-checkout" method="POST" class="admin-form">
-            <!-- Shipping Information -->
-            <div style="margin-bottom: var(--space-8);">
-              <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
-                🚚 Shipping Information
+          <form action="/orders/process-checkout" method="POST" class="space-y-6">
+            <!-- Shipping Information - Compact -->
+            <div>
+              <h3 class="text-base font-medium text-neutral-900 mb-3 flex items-center gap-2">
+                <span class="text-lg">🚚</span>
+                Shipping Information
               </h3>
 
-              <div class="form-group">
-                <label for="address" class="form-label">Street Address *</label>
-                <input type="text"
-                       id="address"
-                       name="shippingAddress[address]"
-                       placeholder="Enter your street address"
-                       class="form-input"
-                       required>
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
-                <div class="form-group">
-                  <label for="city" class="form-label">City *</label>
+              <div class="space-y-3">
+                <div>
+                  <label for="address" class="block text-sm font-medium text-neutral-700 mb-1">Street Address *</label>
                   <input type="text"
-                         id="city"
-                         name="shippingAddress[city]"
-                         placeholder="Enter city"
-                         class="form-input"
+                         id="address"
+                         name="shippingAddress[address]"
+                         placeholder="Enter your street address"
+                         class="form-input-rwanda w-full"
                          required>
                 </div>
 
-                <div class="form-group">
-                  <label for="country" class="form-label">Country *</label>
-                  <select id="country" name="shippingAddress[country]" class="form-select" required>
-                    <option value="">Select Country</option>
-                    <option value="Rwanda" selected>Rwanda</option>
-                    <option value="Kenya">Kenya</option>
-                    <option value="Uganda">Uganda</option>
-                    <option value="Tanzania">Tanzania</option>
-                    <option value="Burundi">Burundi</option>
-                  </select>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label for="city" class="block text-sm font-medium text-neutral-700 mb-1">City *</label>
+                    <input type="text"
+                           id="city"
+                           name="shippingAddress[city]"
+                           placeholder="Enter city"
+                           class="form-input-rwanda w-full"
+                           required>
+                  </div>
+
+                  <div>
+                    <label for="country" class="block text-sm font-medium text-neutral-700 mb-1">Country *</label>
+                    <select id="country" name="shippingAddress[country]" class="form-input-rwanda w-full" required>
+                      <option value="">Select Country</option>
+                      <option value="Rwanda" selected>Rwanda</option>
+                      <option value="Kenya">Kenya</option>
+                      <option value="Uganda">Uganda</option>
+                      <option value="Tanzania">Tanzania</option>
+                      <option value="Burundi">Burundi</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Payment Information -->
-            <div style="margin-bottom: var(--space-8);">
-              <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-4); color: var(--color-gray-900);">
-                💳 Payment Information
+            <!-- Payment Information - Compact -->
+            <div>
+              <h3 class="text-base font-medium text-neutral-900 mb-3 flex items-center gap-2">
+                <span class="text-lg">💳</span>
+                Payment Information
               </h3>
 
-              <div class="form-group">
-                <label class="form-label">Payment Method</label>
-                <div style="display: flex; gap: var(--space-3); margin-bottom: var(--space-4);">
-                  <label style="display: flex; align-items: center; gap: var(--space-2); cursor: pointer;">
-                    <input type="radio" name="paymentMethod" value="mobile-money" checked style="margin: 0;">
-                    <span style="font-size: var(--font-size-sm); color: var(--color-gray-700);">
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-sm font-medium text-neutral-700 mb-2">Payment Method</label>
+                  <div class="flex items-center gap-2">
+                    <input type="radio" name="paymentMethod" value="mobile-money" checked id="mobile-money" class="text-primary focus:ring-primary">
+                    <label for="mobile-money" class="text-sm text-neutral-700">
                       📱 Mobile Money (MTN/Airtel)
-                    </span>
-                  </label>
+                    </label>
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label for="phoneNumber" class="form-label">Mobile Money Number *</label>
-                <input type="tel"
-                       id="phoneNumber"
-                       name="phoneNumber"
-                       placeholder="e.g., 0788123456 or +250788123456"
-                       class="form-input"
-                       pattern="^(\+250|0)[7-9][0-9]{8}$"
-                       title="Enter valid Rwandan phone number"
-                       required>
-                <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin-top: var(--space-1);">
-                  💡 We'll send a payment request to this number
-                </p>
+                <div>
+                  <label for="phoneNumber" class="block text-sm font-medium text-neutral-700 mb-1">Mobile Money Number *</label>
+                  <input type="tel"
+                         id="phoneNumber"
+                         name="phoneNumber"
+                         placeholder="e.g., 0788123456"
+                         class="form-input-rwanda w-full"
+                         pattern="^(\+250|0)[7-9][0-9]{8}$"
+                         title="Enter valid Rwandan phone number"
+                         required>
+                  <p class="text-xs text-neutral-500 mt-1">
+                    💡 We'll send a payment request to this number
+                  </p>
+                </div>
               </div>
             </div>
 
-            <!-- Order Notes -->
-            <div class="form-group">
-              <label for="notes" class="form-label">Order Notes (Optional)</label>
+            <!-- Order Notes - Compact -->
+            <div>
+              <label for="notes" class="block text-sm font-medium text-neutral-700 mb-1">Order Notes (Optional)</label>
               <textarea id="notes"
                         name="notes"
                         placeholder="Any special delivery instructions..."
-                        class="form-input"
-                        rows="3"
-                        style="resize: vertical;"></textarea>
+                        class="form-input-rwanda w-full"
+                        rows="2"></textarea>
             </div>
 
-            <!-- Terms and Conditions -->
-            <div style="margin-bottom: var(--space-6);">
-              <label style="display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer; font-size: var(--font-size-sm);">
-                <input type="checkbox" required style="margin-top: 2px;">
-                <span style="color: var(--color-gray-700);">
-                  I agree to the <a href="/terms" style="color: var(--color-primary); text-decoration: none;">Terms of Service</a>
-                  and <a href="/privacy" style="color: var(--color-primary); text-decoration: none;">Privacy Policy</a>
+            <!-- Terms and Conditions - Compact -->
+            <div>
+              <label class="flex items-start gap-2 cursor-pointer text-sm">
+                <input type="checkbox" required class="mt-0.5 text-primary focus:ring-primary">
+                <span class="text-neutral-700">
+                  I agree to the <a href="/terms" class="text-primary hover:text-primary-600">Terms of Service</a>
+                  and <a href="/privacy" class="text-primary hover:text-primary-600">Privacy Policy</a>
                 </span>
               </label>
             </div>
 
-            <button type="submit" class="btn btn--primary" style="width: 100%; font-size: var(--font-size-lg);">
+            <button type="submit" class="btn-rwanda w-full text-base py-3">
               💳 Proceed to Payment
             </button>
           </form>
 
-          <!-- Security Badges -->
-          <div style="margin-top: var(--space-6); padding: var(--space-4); background: var(--color-success-light); border-radius: var(--radius-md);">
-            <div style="display: flex; align-items: center; gap: var(--space-3); justify-content: center;">
-              <span style="font-size: var(--font-size-lg);">🔒</span>
-              <div style="text-align: center;">
-                <p style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-success); margin: 0;">
-                  Secure Payment
-                </p>
-                <p style="font-size: var(--font-size-xs); color: var(--color-gray-600); margin: 0;">
-                  SSL Encrypted • Mobile Money Protected
-                </p>
+          <!-- Security Badges - Compact -->
+          <div class="mt-4 p-3 bg-success-50 border border-success-200 rounded-lg">
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-base">🔒</span>
+              <div class="text-center">
+                <p class="text-sm font-medium text-success-700">Secure Payment</p>
+                <p class="text-xs text-success-600">SSL Encrypted • Mobile Money Protected</p>
               </div>
             </div>
           </div>

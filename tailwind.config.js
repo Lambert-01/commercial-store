@@ -136,6 +136,44 @@ module.exports = {
           800: '#1e40af',
           900: '#1e3a8a',
         },
+
+        // Dark Starry Theme Colors
+        'starry': {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
+        },
+
+        // Starry Night Colors
+        'night': {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+          950: '#082f49',
+        },
+
+        // Galaxy Gradient Colors
+        'galaxy': {
+          'purple': '#8b5cf6',
+          'blue': '#3b82f6',
+          'indigo': '#6366f1',
+          'cyan': '#06b6d4',
+        },
       },
 
       // Typography Scale
@@ -170,11 +208,21 @@ module.exports = {
         '4xl': '2rem',
       },
 
-      // Box Shadows
+      // Box Shadows - Enhanced for starry theme
       boxShadow: {
         'glow': '0 0 20px rgba(0, 168, 107, 0.3)',
         'glow-yellow': '0 0 20px rgba(247, 209, 23, 0.3)',
         'card-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'glass': '0 8px 32px rgba(0, 0, 0, 0.1)',
+        'glass-lg': '0 20px 40px rgba(0, 0, 0, 0.15)',
+        'star-glow': '0 0 10px rgba(255, 255, 255, 0.5)',
+        'neon': '0 0 20px rgba(0, 168, 107, 0.5), 0 0 40px rgba(0, 168, 107, 0.3)',
+        'neon-yellow': '0 0 20px rgba(247, 209, 23, 0.5), 0 0 40px rgba(247, 209, 23, 0.3)',
+      },
+
+      // Backdrop Blur
+      backdropBlur: {
+        'xs': '2px',
       },
 
       // Animations
@@ -230,7 +278,23 @@ module.exports = {
           'error': '#EF4444',
         },
       },
+      {
+        'rwanda-dark': {
+          'primary': '#00A86B',
+          'secondary': '#F7D117',
+          'accent': '#0066CC',
+          'neutral': '#1e293b',
+          'base-100': '#0f172a',
+          'base-200': '#1e293b',
+          'base-300': '#334155',
+          'info': '#0ea5e9',
+          'success': '#10B981',
+          'warning': '#F59E0B',
+          'error': '#EF4444',
+        },
+      },
       'light',
+      'dark',
     ],
   },
 }

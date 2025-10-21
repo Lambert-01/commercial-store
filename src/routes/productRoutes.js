@@ -23,4 +23,9 @@ router.get('/:id', productController.getProductById);
 // Supplier store route
 router.get('/supplier/:id', productController.getSupplierStore);
 
+// Suppliers Directory (public page)
+router.get('/suppliers/directory', (req, res) => {
+  res.redirect('/suppliers');
+});
+
 module.exports = router;

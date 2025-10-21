@@ -254,6 +254,137 @@ class MobileMoneyService {
   }
 
   /**
+   * Initiate payment (unified method)
+   * @param {Object} paymentData - Payment information
+   */
+  async initiatePayment(paymentData) {
+    try {
+      const { phoneNumber, amount, orderId, description } = paymentData;
+
+      // Determine provider based on phone number
+      const availableProviders = this.getAvailableProviders(phoneNumber);
+
+      if (availableProviders.length === 0) {
+        return {
+          success: false,
+          message: 'Phone number not supported by any mobile money provider'
+        };
+      }
+
+      // Use the first available provider (can be enhanced to let user choose)
+      const provider = availableProviders[0];
+
+      // Generate reference
+      const reference = `ECR${Date.now()}${Math.random().toString(36).substr(2, 5)}`;
+
+      // Prepare payment data
+      const paymentPayload = {
+        phoneNumber,
+        amount,
+        reference,
+        callbackUrl: `${process.env.BASE_URL || 'http://localhost:3000'}/checkout/webhook/${provider.toLowerCase()}`,
+        description: description || `Payment for order ${orderId}`
+      };
+
+      // Process payment with selected provider
+      let result;
+      if (provider === 'MTN') {
+        result = await this.processMTNPayment(paymentPayload);
+      } else if (provider === 'AIRTEL') {
+        result = await this.processAirtelPayment(paymentPayload);
+      } else {
+        return {
+          success: false,
+          message: 'Unsupported provider'
+        };
+      }
+
+      return {
+        success: result.success,
+        reference: reference,
+        transactionId: result.transactionId,
+        provider: provider,
+        message: result.message,
+        error: result.error
+      };
+
+    } catch (error) {
+      logger.error(`Payment initiation failed: ${error.message}`, {
+        phoneNumber: paymentData.phoneNumber,
+        amount: paymentData.amount,
+        orderId: paymentData.orderId
+      });
+
+      return {
+        success: false,
+        message: 'Payment initiation failed',
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Process payment webhook
+   * @param {string} provider - Provider name
+   * @param {Object} webhookData - Webhook data from provider
+   */
+  async processWebhook(provider, webhookData) {
+    try {
+      logger.info(`Processing ${provider} webhook:`, webhookData);
+
+      // Extract relevant information from webhook
+      const reference = webhookData.reference || webhookData.transactionId;
+      const status = webhookData.status || webhookData.paymentStatus;
+      const amount = webhookData.amount;
+
+      // Find order by payment reference
+      const Order = require('../models/Order');
+      const order = await Order.findOne({ paymentReference: reference });
+
+      if (!order) {
+        logger.error(`Order not found for reference: ${reference}`);
+        return {
+          success: false,
+          message: 'Order not found'
+        };
+      }
+
+      // Update order based on payment status
+      let orderStatus = 'pending';
+      if (status === 'SUCCESS' || status === 'COMPLETED' || status === 'PAID') {
+        orderStatus = 'paid';
+        order.paidAt = new Date();
+      } else if (status === 'FAILED' || status === 'CANCELLED') {
+        orderStatus = 'failed';
+      }
+
+      order.status = orderStatus;
+      await order.save();
+
+      logger.info(`Order ${order._id} updated via webhook: ${orderStatus}`);
+
+      return {
+        success: true,
+        orderId: order._id,
+        status: orderStatus,
+        message: `Order updated to ${orderStatus}`
+      };
+
+    } catch (error) {
+      logger.error(`Webhook processing failed: ${error.message}`, {
+        provider,
+        webhookData
+      });
+
+      return {
+        success: false,
+        message: 'Webhook processing failed',
+        error: error.message
+      };
+    }
+  }
+
+  /**
    * Calculate transaction fees
    * @param {number} amount - Transaction amount
    * @param {string} provider - Provider name

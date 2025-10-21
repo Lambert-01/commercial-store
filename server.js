@@ -57,32 +57,51 @@ app.use((req, res, next) => {
   // Set default title
   res.locals.title = 'Ecommerce Rwanda - Multi-Vendor Marketplace';
 
-  // Cart item count (placeholder for now)
+  // Cart item count (will be set by specific routes if needed)
   res.locals.cartItemCount = 0;
 
   next();
 });
 
-// Basic home route
+// Home route with role-based logic
 app.get('/', (req, res) => {
+  // If user is logged in, redirect based on role
+  if (req.session.user) {
+    const role = req.session.user.role;
+
+    switch (role) {
+      case 'admin':
+        return res.redirect('/admin-portal');
+      case 'supplier':
+        return res.redirect('/supplier/dashboard');
+      case 'customer':
+      default:
+        // For customers, show dashboard instead of homepage
+        return res.redirect('/dashboard');
+    }
+  }
+
+  // Public homepage for non-authenticated users
   res.locals.currentRoute = 'home';
   res.locals.title = 'Ecommerce Rwanda - Multi-Vendor Marketplace';
   res.render('pages/index');
 });
 
-// Routes
+// Routes - working configuration
 app.use('/', require('./src/routes/authRoutes'));
 app.use('/products', require('./src/routes/productRoutes'));
 app.use('/cart', require('./src/routes/cartRoutes'));
 app.use('/orders', require('./src/routes/orderRoutes'));
 app.use('/supplier', require('./src/routes/supplierRoutes'));
-app.use('/admin', require('./src/routes/adminRoutes'));
+app.use('/profile', require('./src/routes/profileRoutes'));
 
-// Admin Portal - Independent admin interface
-app.use('/admin-portal', require('./src/routes/adminPortalRoutes'));
+// Client dashboard (for customers)
+app.use('/dashboard', require('./src/routes/clientDashboardRoutes'));
 
-// Order processing route (POST from checkout form)
-app.post('/orders/process-checkout', require('./src/controllers/orderController').processCheckout);
+// Temporarily comment out admin routes to isolate issues
+// app.use('/admin', require('./src/routes/adminRoutes'));
+// app.use('/admin-portal', require('./src/routes/adminPortalRoutes'));
+// app.use('/checkout', require('./src/routes/checkoutRoutes'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

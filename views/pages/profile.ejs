@@ -1,0 +1,318 @@
+<%- include('../partials/header') %>
+
+<!-- User Profile Section with Rwandan Design System -->
+<section class="py-12 bg-neutral-50 min-h-screen" data-aos="fade-up">
+  <div class="container mx-auto px-4">
+    <!-- Page Header -->
+    <div class="mb-8" data-aos="fade-up" data-aos-delay="100">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-3xl">
+          👤
+        </div>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-bold text-neutral-900">
+            My Profile
+          </h1>
+          <p class="text-neutral-600 text-lg">
+            Manage your account settings and preferences
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Profile Sidebar -->
+      <div class="lg:col-span-1" data-aos="fade-right" data-aos-delay="200">
+        <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+          <!-- User Info Card -->
+          <div class="text-center mb-6">
+            <div class="w-24 h-24 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-3xl text-white mx-auto mb-4">
+              <%= typeof user !== 'undefined' && user.name ? user.name.charAt(0).toUpperCase() : 'U' %>
+            </div>
+            <h3 class="text-xl font-bold text-neutral-900 mb-1">
+              <%= typeof user !== 'undefined' && user.name ? user.name : 'User' %>
+            </h3>
+            <p class="text-neutral-600 text-sm mb-2">
+              <%= typeof user !== 'undefined' && user.email ? user.email : '' %>
+            </p>
+            <span class="inline-flex items-center gap-1 bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+              <span class="w-2 h-2 bg-primary rounded-full"></span>
+              <%= typeof user !== 'undefined' && user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'Customer' %>
+            </span>
+          </div>
+
+          <!-- Profile Navigation -->
+          <nav class="space-y-2">
+            <a href="#personal-info"
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-700 hover:bg-primary hover:bg-opacity-5 hover:text-primary transition-all duration-200">
+              <span>👤</span>
+              <span class="font-medium">Personal Information</span>
+            </a>
+            <a href="#security"
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-700 hover:bg-primary hover:bg-opacity-5 hover:text-primary transition-all duration-200">
+              <span>🔒</span>
+              <span class="font-medium">Security Settings</span>
+            </a>
+            <a href="#orders"
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-700 hover:bg-primary hover:bg-opacity-5 hover:text-primary transition-all duration-200">
+              <span>📋</span>
+              <span class="font-medium">Order History</span>
+            </a>
+            <% if (isSupplier) { %>
+              <a href="/supplier/dashboard"
+                 class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-700 hover:bg-primary hover:bg-opacity-5 hover:text-primary transition-all duration-200">
+                <span>🏪</span>
+                <span class="font-medium">Supplier Dashboard</span>
+              </a>
+            <% } %>
+            <% if (isAdmin) { %>
+              <a href="/admin-portal"
+                 class="flex items-center gap-3 px-4 py-3 rounded-lg text-neutral-700 hover:bg-primary hover:bg-opacity-5 hover:text-primary transition-all duration-200">
+                <span>⚙️</span>
+                <span class="font-medium">Admin Portal</span>
+              </a>
+            <% } %>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Profile Content -->
+      <div class="lg:col-span-2 space-y-8" data-aos="fade-left" data-aos-delay="300">
+
+        <!-- Personal Information -->
+        <div id="personal-info" class="bg-white rounded-xl shadow-lg p-8">
+          <h2 class="text-2xl font-bold text-neutral-900 mb-6 flex items-center gap-3">
+            <span>👤</span>
+            Personal Information
+          </h2>
+
+          <% if (typeof error !== 'undefined' && error) { %>
+            <div class="bg-error bg-opacity-10 border border-error border-opacity-20 rounded-lg p-4 mb-6">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">⚠️</span>
+                <div>
+                  <h3 class="font-semibold text-error">Error</h3>
+                  <p class="text-error text-opacity-80"><%= error %></p>
+                </div>
+              </div>
+            </div>
+          <% } %>
+
+          <% if (typeof success !== 'undefined' && success) { %>
+            <div class="bg-success bg-opacity-10 border border-success border-opacity-20 rounded-lg p-4 mb-6">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">✅</span>
+                <div>
+                  <h3 class="font-semibold text-success">Success</h3>
+                  <p class="text-success text-opacity-80"><%= success %></p>
+                </div>
+              </div>
+            </div>
+          <% } %>
+
+          <form method="POST" action="/profile/update" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="name" class="block text-sm font-medium text-neutral-700 mb-2">
+                  Full Name
+                </label>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       value="<%= typeof user !== 'undefined' && user.name ? user.name : '' %>"
+                       class="form-input-rwanda w-full"
+                       required>
+              </div>
+
+              <div>
+                <label for="email" class="block text-sm font-medium text-neutral-700 mb-2">
+                  Email Address
+                </label>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       value="<%= typeof user !== 'undefined' && user.email ? user.email : '' %>"
+                       class="form-input-rwanda w-full"
+                       required>
+              </div>
+            </div>
+
+            <div>
+              <label for="phone" class="block text-sm font-medium text-neutral-700 mb-2">
+                Phone Number
+              </label>
+              <input type="tel"
+                     id="phone"
+                     name="phone"
+                     value="<%= typeof user !== 'undefined' && user.phone ? user.phone : '' %>"
+                     placeholder="e.g., +250788123456"
+                     class="form-input-rwanda w-full"
+                     pattern="^(\+250|0)[7-9][0-9]{8}$"
+                     title="Enter valid Rwandan phone number">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="city" class="block text-sm font-medium text-neutral-700 mb-2">
+                  City
+                </label>
+                <input type="text"
+                       id="city"
+                       name="city"
+                       value="<%= typeof user !== 'undefined' && user.city ? user.city : '' %>"
+                       placeholder="e.g., Kigali"
+                       class="form-input-rwanda w-full">
+              </div>
+
+              <div>
+                <label for="country" class="block text-sm font-medium text-neutral-700 mb-2">
+                  Country
+                </label>
+                <select id="country" name="country" class="form-input-rwanda w-full">
+                  <option value="">Select Country</option>
+                  <option value="Rwanda" <%= typeof user !== 'undefined' && user.country === 'Rwanda' ? 'selected' : '' %>>Rwanda</option>
+                  <option value="Kenya" <%= typeof user !== 'undefined' && user.country === 'Kenya' ? 'selected' : '' %>>Kenya</option>
+                  <option value="Uganda" <%= typeof user !== 'undefined' && user.country === 'Uganda' ? 'selected' : '' %>>Uganda</option>
+                  <option value="Tanzania" <%= typeof user !== 'undefined' && user.country === 'Tanzania' ? 'selected' : '' %>>Tanzania</option>
+                  <option value="Burundi" <%= typeof user !== 'undefined' && user.country === 'Burundi' ? 'selected' : '' %>>Burundi</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="address" class="block text-sm font-medium text-neutral-700 mb-2">
+                Address
+              </label>
+              <textarea id="address"
+                        name="address"
+                        rows="3"
+                        placeholder="Enter your full address"
+                        class="form-input-rwanda w-full"><%= typeof user !== 'undefined' && user.address ? user.address : '' %></textarea>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit"
+                      class="btn-rwanda px-8 py-3">
+                💾 Update Profile
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Security Settings -->
+        <div id="security" class="bg-white rounded-xl shadow-lg p-8">
+          <h2 class="text-2xl font-bold text-neutral-900 mb-6 flex items-center gap-3">
+            <span>🔒</span>
+            Security Settings
+          </h2>
+
+          <form method="POST" action="/profile/change-password" class="space-y-6">
+            <div>
+              <label for="currentPassword" class="block text-sm font-medium text-neutral-700 mb-2">
+                Current Password
+              </label>
+              <input type="password"
+                     id="currentPassword"
+                     name="currentPassword"
+                     class="form-input-rwanda w-full"
+                     required>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="newPassword" class="block text-sm font-medium text-neutral-700 mb-2">
+                  New Password
+                </label>
+                <input type="password"
+                       id="newPassword"
+                       name="newPassword"
+                       class="form-input-rwanda w-full"
+                       minlength="6"
+                       required>
+              </div>
+
+              <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-neutral-700 mb-2">
+                  Confirm New Password
+                </label>
+                <input type="password"
+                       id="confirmPassword"
+                       name="confirmPassword"
+                       class="form-input-rwanda w-full"
+                       minlength="6"
+                       required>
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit"
+                      class="btn-rwanda px-8 py-3">
+                🔑 Change Password
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Recent Orders -->
+        <div id="orders" class="bg-white rounded-xl shadow-lg p-8">
+          <h2 class="text-2xl font-bold text-neutral-900 mb-6 flex items-center gap-3">
+            <span>📋</span>
+            Recent Orders
+          </h2>
+
+          <% if (typeof recentOrders !== 'undefined' && recentOrders.length > 0) { %>
+            <div class="space-y-4">
+              <% recentOrders.slice(0, 3).forEach(order => { %>
+                <div class="border border-neutral-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                  <div class="flex items-center justify-between mb-3">
+                    <div>
+                      <h4 class="font-semibold text-neutral-900">
+                        Order #<%= order._id.toString().slice(-8) %>
+                      </h4>
+                      <p class="text-sm text-neutral-600">
+                        <%= new Date(order.createdAt).toLocaleDateString() %>
+                      </p>
+                    </div>
+                    <div class="text-right">
+                      <span class="status-badge <%= order.status === 'delivered' ? 'status-badge--approved' : order.status === 'shipped' ? 'status-badge--active' : order.status === 'pending' ? 'status-badge--pending' : 'status-badge--rejected' %>">
+                        <%= order.status.charAt(0).toUpperCase() + order.status.slice(1) %>
+                      </span>
+                      <p class="text-lg font-bold text-primary mt-1">
+                        <%= order.total %> RWF
+                      </p>
+                    </div>
+                  </div>
+                  <a href="/orders/details/<%= order._id %>"
+                     class="text-primary hover:text-primary-600 text-sm font-medium">
+                    View Details →
+                  </a>
+                </div>
+              <% }); %>
+            </div>
+
+            <div class="text-center mt-6">
+              <a href="/orders/history"
+                 class="btn-rwanda-secondary">
+                📋 View All Orders
+              </a>
+            </div>
+          <% } else { %>
+            <div class="text-center py-8">
+              <div class="w-16 h-16 bg-neutral-200 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                📦
+              </div>
+              <h3 class="text-lg font-semibold text-neutral-900 mb-2">No Orders Yet</h3>
+              <p class="text-neutral-600 mb-4">Start shopping to see your orders here</p>
+              <a href="/products"
+                 class="btn-rwanda">
+                🛍️ Start Shopping
+              </a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,120 +1,125 @@
 <%- include('../partials/header') %>
 
-<!-- Hero Section with Tailwind + AOS Animations -->
-<section class="hero-rwanda min-h-screen flex items-center justify-center" data-aos="fade-up" data-aos-duration="1000">
-  <div class="container mx-auto px-4 text-center">
-    <div class="max-w-4xl mx-auto">
+<!-- Enhanced Hero Section with Starry Night Theme -->
+<section class="hero-starry min-h-screen flex items-center justify-center relative overflow-hidden" data-aos="fade-up" data-aos-duration="1000">
+  <!-- Nebula Overlay for depth -->
+  <div class="nebula-overlay"></div>
+
+  <div class="container mx-auto px-4 text-center relative z-10">
+    <div class="max-w-5xl mx-auto">
       <!-- Animated Hero Content -->
       <div class="animate__animated animate__fadeInUp" data-aos="zoom-in" data-aos-delay="200">
         <div class="flex items-center justify-center gap-4 mb-8">
-          <div class="text-6xl animate-bounce">🇷🇼</div>
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-shadow">
+          <div class="text-6xl animate-bounce shadow-lg">🇷🇼</div>
+          <h1 class="hero-title text-glow-primary">
             Welcome to Rwanda's Premier Marketplace
           </h1>
         </div>
       </div>
 
-      <p class="text-lg md:text-xl lg:text-2xl mb-12 opacity-90 leading-relaxed animate__animated animate__fadeInUp animate__delay-400ms"
+      <p class="text-lg md:text-xl lg:text-2xl mb-12 text-slate-300 leading-relaxed animate__animated animate__fadeInUp animate__delay-400ms"
          data-aos="fade-up"
          data-aos-delay="400">
         Discover amazing products from local Rwandan suppliers. Shop with confidence using MTN Mobile Money and Airtel Money.
-        <span class="font-semibold text-rwanda-yellow">Support local businesses and grow Rwanda's digital economy.</span>
+        <span class="font-semibold gradient-text-secondary">Support local businesses and grow Rwanda's digital economy.</span>
       </p>
 
-      <!-- CTA Buttons with animations -->
+      <!-- Enhanced CTA Buttons with professional styling -->
       <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate__animated animate__fadeInUp animate__delay-600ms"
            data-aos="fade-up"
            data-aos-delay="600">
         <a href="/products"
-           class="btn-rwanda text-lg px-8 py-4 animate-glow hover:animate-pulse">
-          🛍️ Browse Products
+           class="btn-neon text-lg px-8 py-4 group">
+          <span class="animate-pulse">🛍️</span> Browse Products
         </a>
-        <a href="/supplier/register"
-           class="btn-rwanda-secondary text-lg px-8 py-4">
-          🏪 Become a Supplier
+        <a href="/register"
+           class="btn-gradient-secondary text-lg px-8 py-4 group">
+          <span class="animate-bounce">🏪</span> Become a Supplier
         </a>
       </div>
 
-      <!-- Trust indicators -->
-      <div class="mt-16 flex flex-wrap justify-center items-center gap-8 opacity-80 animate__animated animate__fadeInUp animate__delay-800ms"
+      <!-- Enhanced Trust indicators with glassmorphism -->
+      <div class="mt-16 flex flex-wrap justify-center items-center gap-8 animate__animated animate__fadeInUp animate__delay-800ms"
            data-aos="fade-up"
            data-aos-delay="800">
-        <div class="flex items-center gap-2 bg-white bg-opacity-20 px-4 py-2 rounded-full">
-          <span class="text-2xl">🔒</span>
-          <span class="font-medium">Secure Payments</span>
+        <div class="glass-panel flex items-center gap-3 px-6 py-3 rounded-full hover-lift">
+          <span class="text-2xl animate-pulse">🔒</span>
+          <span class="font-medium text-white">Secure Payments</span>
         </div>
-        <div class="flex items-center gap-2 bg-white bg-opacity-20 px-4 py-2 rounded-full">
-          <span class="text-2xl">📱</span>
-          <span class="font-medium">Mobile Money</span>
+        <div class="glass-panel flex items-center gap-3 px-6 py-3 rounded-full hover-lift">
+          <span class="text-2xl animate-bounce">📱</span>
+          <span class="font-medium text-white">Mobile Money</span>
         </div>
-        <div class="flex items-center gap-2 bg-white bg-opacity-20 px-4 py-2 rounded-full">
-          <span class="text-2xl">🏆</span>
-          <span class="font-medium">Verified Suppliers</span>
+        <div class="glass-panel flex items-center gap-3 px-6 py-3 rounded-full hover-lift">
+          <span class="text-2xl animate-float">🏆</span>
+          <span class="font-medium text-white">Verified Suppliers</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features Section with Tailwind Grid -->
-<section class="py-20 bg-white" data-aos="fade-up" data-aos-duration="1000">
+<!-- Enhanced Features Section with Glassmorphism Cards -->
+<section class="py-20 starry-bg relative" data-aos="fade-up" data-aos-duration="1000">
+  <!-- Subtle background pattern for depth -->
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/20 to-transparent"></div>
   <div class="container mx-auto px-4">
     <!-- Section Header -->
     <div class="text-center mb-16" data-aos="fade-up" data-aos-delay="200">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
-        Why Choose <span class="text-rwanda-yellow">Ecommerce Rwanda?</span>
+      <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white text-glow-secondary">
+        Why Choose <span class="gradient-text-rainbow">Ecommerce Rwanda?</span>
       </h2>
-      <p class="text-lg md:text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
+      <p class="text-base md:text-lg text-white max-w-3xl mx-auto leading-relaxed">
         We're building Rwanda's most trusted marketplace, connecting customers with local suppliers across the country.
       </p>
     </div>
 
-    <!-- Features Grid with animations -->
+    <!-- Enhanced Features Grid with glassmorphism cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Feature 1: Mobile Money -->
-      <div class="product-card text-center p-8 animate__animated animate__fadeInUp animate__delay-200ms"
+      <div class="glass-card text-center p-6 hover-lift animate__animated animate__fadeInUp animate__delay-200ms bg-black/20"
            data-aos="flip-left"
            data-aos-delay="300">
-        <div class="w-20 h-20 bg-primary mx-auto mb-6 rounded-full flex items-center justify-center text-3xl animate-float">
+        <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl animate-float shadow-lg">
           📱
         </div>
-        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-neutral-900">
+        <h3 class="text-lg md:text-xl font-semibold mb-3 text-white">
           Mobile Money Integration
         </h3>
-        <p class="text-neutral-600 leading-relaxed">
-          Pay securely with <strong class="text-rwanda-yellow">MTN Mobile Money</strong> and <strong class="text-rwanda-yellow">Airtel Money</strong>.
+        <p class="text-sm md:text-base text-white leading-relaxed">
+          Pay securely with <span class="bg-slate-800/70 text-yellow-300 px-2 py-1 rounded border border-yellow-400/50">MTN Mobile Money</span> and <span class="bg-slate-800/70 text-cyan-300 px-2 py-1 rounded border border-cyan-400/50">Airtel Money</span>.
           No bank account required - just use your phone!
         </p>
       </div>
 
       <!-- Feature 2: Local Suppliers -->
-      <div class="product-card text-center p-8 animate__animated animate__fadeInUp animate__delay-400ms"
+      <div class="glass-card text-center p-6 hover-lift animate__animated animate__fadeInUp animate__delay-400ms bg-black/20"
            data-aos="flip-left"
            data-aos-delay="500">
-        <div class="w-20 h-20 bg-secondary mx-auto mb-6 rounded-full flex items-center justify-center text-3xl animate-float">
+        <div class="w-16 h-16 bg-gradient-to-br from-secondary to-yellow-500 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl animate-float shadow-lg">
           🏪
         </div>
-        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-neutral-900">
+        <h3 class="text-lg md:text-xl font-semibold mb-3 text-white">
           Local Suppliers
         </h3>
-        <p class="text-neutral-600 leading-relaxed">
-          Support <strong class="text-rwanda-yellow">Rwandan businesses</strong> and entrepreneurs.
+        <p class="text-sm md:text-base text-white leading-relaxed">
+          Support <span class="bg-slate-800/70 text-cyan-300 px-2 py-1 rounded border border-cyan-400/50">Rwandan businesses</span> and entrepreneurs.
           Every purchase helps grow our local economy.
         </p>
       </div>
 
       <!-- Feature 3: Fast Delivery -->
-      <div class="product-card text-center p-8 animate__animated animate__fadeInUp animate__delay-600ms"
+      <div class="glass-card text-center p-6 hover-lift animate__animated animate__fadeInUp animate__delay-600ms bg-black/20"
            data-aos="flip-left"
            data-aos-delay="700">
-        <div class="w-20 h-20 bg-accent mx-auto mb-6 rounded-full flex items-center justify-center text-3xl animate-float">
+        <div class="w-16 h-16 bg-gradient-to-br from-accent to-blue-600 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl animate-float shadow-lg">
           🚚
         </div>
-        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-neutral-900">
+        <h3 class="text-lg md:text-xl font-semibold mb-3 text-white">
           Fast Delivery
         </h3>
-        <p class="text-neutral-600 leading-relaxed">
-          Quick and reliable delivery across <strong class="text-rwanda-yellow">Kigali</strong> and major Rwandan cities.
+        <p class="text-sm md:text-base text-white leading-relaxed">
+          Quick and reliable delivery across <span class="bg-slate-800/70 text-yellow-300 px-2 py-1 rounded border border-yellow-400/50">Kigali</span> and major Rwandan cities.
           Track your orders in real-time.
         </p>
       </div>
@@ -122,40 +127,44 @@
   </div>
 </section>
 
-<!-- CTA Section with modern design -->
-<section class="py-20 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white relative overflow-hidden"
+<!-- Enhanced CTA Section with Starry Theme -->
+<section class="py-20 starry-bg relative overflow-hidden"
          data-aos="fade-up"
          data-aos-duration="1000">
-  <!-- Background decoration -->
-  <div class="absolute inset-0 opacity-10">
-    <div class="absolute top-10 left-10 text-8xl animate-pulse">🛒</div>
-    <div class="absolute bottom-10 right-10 text-8xl animate-pulse">🏪</div>
+  <!-- Nebula Overlay -->
+  <div class="nebula-overlay"></div>
+
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 opacity-20">
+    <div class="absolute top-10 left-10 text-6xl animate-pulse">🛒</div>
+    <div class="absolute bottom-10 right-10 text-6xl animate-pulse">🏪</div>
+    <div class="absolute top-1/2 left-1/4 text-4xl animate-bounce">🇷🇼</div>
   </div>
 
   <div class="container mx-auto px-4 relative z-10">
-    <div class="text-center max-w-2xl mx-auto">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate__animated animate__fadeInUp"
+    <div class="text-center max-w-3xl mx-auto">
+      <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-white animate__animated animate__fadeInUp text-glow-secondary"
           data-aos="zoom-in"
           data-aos-delay="200">
-        Ready to Start Shopping? 🚀
+        Ready to Start Shopping? <span class="animate-pulse">🚀</span>
       </h2>
-      <p class="text-lg md:text-xl mb-8 opacity-90 animate__animated animate__fadeInUp animate__delay-400ms"
+      <p class="text-base md:text-lg mb-8 text-white animate__animated animate__fadeInUp animate__delay-400ms"
          data-aos="fade-up"
          data-aos-delay="400">
-        Join thousands of satisfied customers already shopping on Rwanda's most trusted marketplace.
+        Join thousands of satisfied customers already shopping on <span class="bg-slate-800/70 text-yellow-300 px-2 py-1 rounded border border-yellow-400/50">Rwanda's most trusted marketplace</span>.
       </p>
 
-      <!-- CTA Buttons -->
+      <!-- Enhanced CTA Buttons -->
       <div class="flex flex-col sm:flex-row gap-6 justify-center animate__animated animate__fadeInUp animate__delay-600ms"
            data-aos="fade-up"
            data-aos-delay="600">
         <a href="/register"
-           class="btn-rwanda text-lg px-8 py-4 animate-glow">
-          🚀 Get Started Now
+           class="btn-neon text-lg px-8 py-4 group">
+          <span class="animate-bounce">🚀</span> Get Started Now
         </a>
         <a href="/products"
-           class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-neutral-900 font-medium py-3 px-8 rounded-lg transition-all duration-200 text-lg">
-          Browse Products
+           class="btn-glass text-lg px-8 py-4 group">
+          <span class="animate-pulse">🛍️</span> Browse Products
         </a>
       </div>
     </div>
